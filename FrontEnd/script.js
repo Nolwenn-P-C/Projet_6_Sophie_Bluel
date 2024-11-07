@@ -5,6 +5,7 @@ async function mesProjets(){
         let display = ''
         for (let figure of data){
             console.log(figure)
+            // création des images et des titres
             display += `
                 <figure>
                     <img src="${figure.imageUrl}" alt="${figure.title}">
@@ -12,8 +13,7 @@ async function mesProjets(){
                 </figure>
             `
         }
-        document.querySelector('.gallery').innerHTML = display
-        //document.querySelector('.gallery').insertAdjacentHTML("beforeend", display)
+        document.querySelector('.gallery').insertAdjacentHTML("beforeend", display) // insertion dans le code HTML
     }catch (err) {console.log(err)}
 }
 mesProjets()
