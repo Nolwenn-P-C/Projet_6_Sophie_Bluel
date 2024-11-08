@@ -49,7 +49,7 @@ const filtres = document.querySelector(".filtres")
 async function displayCategorieBouton(){
     //création du bouton Tous
     const btnAll = document.createElement("button");
-    btnAll.textContent = "TOUS";
+    btnAll.textContent = "Tous";
     btnAll.id = "0"; // ID spécial pour indiquer que ce bouton affiche tous les projets
     filtres.appendChild(btnAll); // Ajoute le bouton "TOUS" à l'élément des filtres
     
