@@ -76,6 +76,7 @@ displayCategorieBouton()
     // Parcourt chaque bouton et lui ajoute un écouteur d'événements "click"
     boutons.forEach((bouton) => {
         bouton.addEventListener("click", () => {
+            console.log(click)
             // Récupère l'ID de la catégorie à filtrer
             let btnID = parseInt(bouton.id);
             // Filtre les éléments selon la catégorie
@@ -85,7 +86,7 @@ displayCategorieBouton()
                 filtreWorks = works;
             } else {
                 // Sinon, on filtre les projets selon la catégorie
-                filtreWorks = works.filter(work => work.categoryId === btnID);
+                filtreWorks = works.filter(figure => figure.categoryId === btnID);
             }
             // Mise à jour de la galerie avec les éléments filtrés
             let displayFiltre = '';
