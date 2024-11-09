@@ -90,12 +90,12 @@ nav ul {
 	list-style-type: none;
 
 }
-nav li {
+nav a {
 	padding: 0 10px;
 	font-size: 1.2em;
 }
 
-li:hover {
+a:hover {
 	color: #B1663C;
 }
 #introduction {
@@ -137,31 +137,31 @@ li:hover {
 	width: 100%;
 
 }
-#contact {
+#contact, #logIn {
 	width: 50%;
-margin: auto;
+	margin: auto;
 }
-#contact > * {
+#contact > * , #logIn > *{
 	text-align: center;
 
 }
-#contact h2{
+#contact h2, #logIn h2{
 	margin-bottom: 20px;
 }
-#contact form {
+#contact form, #logIn form {
 	text-align: left;
 	margin-top:30px;
 	display: flex;
 	flex-direction: column;
 }
 
-#contact input {
+#contact input, #logIn input {
 	height: 50px;
 	font-size: 1.2em;
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
-#contact label {
+#contact label, #logIn label {
 	margin: 2em 0 1em 0;
 }
 #contact textarea {
@@ -186,7 +186,26 @@ footer nav ul {
 	margin: 2em
 }
 
+html{
+	background-color: #FFFEF8;
+}
+
+html footer{
+	background-color: white;
+}
+
 /* ********************* Ajout du code ********************* */
+nav a {
+    text-decoration: none; 
+    color: black; 
+    font-weight: normal; 
+}
+
+
+nav a.active {
+    font-weight: bold; 
+}
+
 .filtres {
 	display: flex;
 	justify-content: center;
@@ -210,6 +229,13 @@ footer nav ul {
 	color: white;
 }
 
+#login-page {
+    width: 1440px;
+    height: 1024px;
+    
+   
+    
+}
 
 
 
