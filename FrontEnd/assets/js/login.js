@@ -13,6 +13,7 @@ function connexion(){
         }
         // Convertit l'objet identifiant en chaîne JSON pour envoi
         const chargeUtile= JSON.stringify(identifiant)
+        console.log(chargeUtile)
 
         // Appel à l'API pour vérifier les identifiants de connexion
         fetch ("http://localhost:5678/api/users/login", {
@@ -20,11 +21,14 @@ function connexion(){
         headers: {"Content-type": "application/json"},
         body: chargeUtile
         })
-        .then (response =>{
-            if (response.ok){
-                window.location.href ="http://localhost:5500/" // Redirection vers la page d'accueil si la connexion est réussie
+        .then (data =>{
+            console.log(data);  // Affiche la réponse du serveur
+            if (data.userID==1){
+                localStorage.setItem("token", data.token);
+                // Redirection vers la page modèle
+                location.href = "../../index.html";
+                console.log(data.token);
             } else{
-                // Vérifie si un message d'erreur est déjà affiché, pour éviter les doublons
                 // Vérifie si un message d'erreur est déjà affiché, pour éviter les doublons
                 let erreur = document.querySelector(".message-erreur");
                 
@@ -36,9 +40,12 @@ function connexion(){
                 const form = document.querySelector("form")
                 form.appendChild(erreur) 
                 }
-            }
-        })
+            } 
+        }) .catch((err) => {
+            console.log(err);
+          });
     }) 
+    
 }
 connexion()
  
