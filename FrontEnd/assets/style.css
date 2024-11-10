@@ -232,11 +232,16 @@ nav a.active {
 #login-page {
     width: 1440px;
     height: 1024px;
-    
-   
-    
 }
 
+#logIn h2 {
+	padding-top: 25px;
+}
+
+.message-erreur{
+	text-align:center;
+	margin-bottom: 40px;
+}
 
 
 
