@@ -1,3 +1,5 @@
+ import {login } from "./modale.js"
+
 //*************************Récupération des API *************************/
  async function boutonCategorie(){
     // Récupère les données des catégories depuis l'API
@@ -51,6 +53,7 @@ async function displayCategorieBouton(){
     const btnAll = document.createElement("button");
     btnAll.textContent = "Tous";
     btnAll.id = "0"; // ID spécial pour indiquer que ce bouton affiche tous les projets
+    btnAll.classList.add("boutonsFiltre")
     filtres.appendChild(btnAll); // Ajoute le bouton "TOUS" à l'élément des filtres
     
     //création des autres boutons
@@ -58,7 +61,7 @@ async function displayCategorieBouton(){
     categories.forEach((categorie) => {
         const btn = document.createElement("button"); // Crée un nouveau bouton pour la catégorie
         btn.textContent = categorie.name; // Met le nom de la catégorie pour le texte du bouton
-        btn.classList.add("button_category")
+        btn.classList.add("boutonsFiltre")
         btn.id = categorie.id; // Attribue l'ID de la catégorie au bouton
         filtres.appendChild(btn); // Ajoute le bouton de catégorie à l'élément des filtres
     })

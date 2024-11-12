@@ -23,7 +23,7 @@ function connexion(){
         })
         .then (data =>{
             console.log(data);  // Affiche la réponse du serveur
-            if (data.userID==1){
+            if (data.ok){
                 localStorage.setItem("token", data.token);
                 // Redirection vers la page modèle
                 location.href = "../../index.html";
