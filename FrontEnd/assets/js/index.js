@@ -1,4 +1,7 @@
-//*************************Récupération des API *************************/
+//*************************************************************************************************************************/
+//**************************************************Récupération des API **************************************************/
+//*************************************************************************************************************************/
+
  async function boutonCategorie(){
     // Récupère les données des catégories depuis l'API
     const reponse = await fetch("http://localhost:5678/api/categories")
@@ -17,7 +20,10 @@ async function getWorks (){
 getWorks()
 
 
- //*************************Affichage des projets *************************/
+//*************************************************************************************************************************/
+//***************************************************Affichage des projets ************************************************/
+//*************************************************************************************************************************/
+
 async function mesProjets(){
     try{
         // Récupère les données des projets
@@ -41,8 +47,9 @@ async function mesProjets(){
 mesProjets()
 
 
-
-//*************************Création des boutons filtres *************************/
+//*************************************************************************************************************************/
+//**********************************************Création des boutons filtres **********************************************/
+//*************************************************************************************************************************/
 
 const filtres = document.querySelector(".filtres")
 
@@ -51,6 +58,7 @@ async function displayCategorieBouton(){
     const btnAll = document.createElement("button");
     btnAll.textContent = "Tous";
     btnAll.id = "0"; // ID spécial pour indiquer que ce bouton affiche tous les projets
+    btnAll.classList.add("boutonsFiltre")
     filtres.appendChild(btnAll); // Ajoute le bouton "TOUS" à l'élément des filtres
     
     //création des autres boutons
@@ -58,7 +66,7 @@ async function displayCategorieBouton(){
     categories.forEach((categorie) => {
         const btn = document.createElement("button"); // Crée un nouveau bouton pour la catégorie
         btn.textContent = categorie.name; // Met le nom de la catégorie pour le texte du bouton
-        btn.classList.add("button_category")
+        btn.classList.add("boutonsFiltre")
         btn.id = categorie.id; // Attribue l'ID de la catégorie au bouton
         filtres.appendChild(btn); // Ajoute le bouton de catégorie à l'élément des filtres
     })
@@ -66,8 +74,9 @@ async function displayCategorieBouton(){
 displayCategorieBouton()
 
 
-
- //*************************Affichage et fonctionnement des filtres *************************/
+//*************************************************************************************************************************/
+//****************************************Affichage et fonctionnement des filtres *****************************************/
+//*************************************************************************************************************************/
 
  async function filtreCategorie() {
     const works = await getWorks() // Récupère tous les projets pour appliquer les filtres
@@ -102,3 +111,51 @@ displayCategorieBouton()
     });
 }
 filtreCategorie()
+
+
+//*************************************************************************************************************************/
+//************************************************** Bouton Logout/LogIn **************************************************/
+//*************************************************************************************************************************/
+
+const logInOutBtn =  document.querySelector(".logInOut")
+const token = localStorage.getItem("token")
+const btnsCategories = document.querySelectorAll(".boutonsFiltre")
+const btnEdit = document.querySelector(".edit")
+
+
+// Vérifie si le token est présent dans le localStorage (signe que l'utilisateur est connecté) 
+if (token) {
+    editionMode() // Active le mode édition si le token existe
+    logOut() // Configure la déconnexion de l'utilisateur
+}
+
+//afficher le mode édition
+function editionMode() {
+	logInOutBtn.textContent = "logout" // Change le texte du bouton en "logout" pour indiquer la possibilité de se déconnecter
+	const bannerEdition = document.createElement("div")
+	let banner = ''
+    // Déclare la structure HTML du contenu du banner avec un texte et une icône
+    banner = `
+        <p class="bannerEdition"><i class="fa-regular fa-pen-to-square"></i>Mode édition<p>
+        `
+    // Insère le banner en haut de la page (dans <body>), juste avant les autres éléments
+    // Puis ajoute le contenu HTML défini dans `banner` dans `bannerEdit`
+	document.body.prepend(bannerEdition).insertAdjacentHTML("beforeend", banner)
+    // Masque tous les boutons de catégorie pour simplifier l'interface en mode édition
+    btnsCategories.forEach(btn => {
+        btn.style.display = "none";
+    });
+}
+
+
+//fonction pour se déconnecter
+function logOut() {
+	logInOutBtn.addEventListener("click", (event) => {
+        // Empêche le comportement par défaut du bouton (pour éviter une redirection non désirée)
+        event.preventDefault() 
+        // Supprime les données de session (userId et token) pour déconnecter l'utilisateur
+		localStorage.removeItem("token")
+        // Redirige l'utilisateur vers la page d'accueil (index.html) après la déconnexion
+		window.location.href = "index.html" 
+	})
+}
