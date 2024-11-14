@@ -27,7 +27,7 @@ getWorks()
 async function mesProjets(){
     try{
         // Récupère les données des projets
-        let works = await getWorks();
+        let works = await getWorks()
         let display = ''
         // Parcourt chaque projet (figure) et crée un bloc HTML pour l'affichage
         for (let figure of works){
@@ -55,8 +55,8 @@ const filtres = document.querySelector(".filtres")
 
 async function displayCategorieBouton(){
     //création du bouton Tous
-    const btnAll = document.createElement("button");
-    btnAll.textContent = "Tous";
+    const btnAll = document.createElement("button")
+    btnAll.textContent = "Tous"
     btnAll.id = "0"; // ID spécial pour indiquer que ce bouton affiche tous les projets
     btnAll.classList.add("boutonsFiltre")
     filtres.appendChild(btnAll); // Ajoute le bouton "TOUS" à l'élément des filtres
@@ -64,11 +64,11 @@ async function displayCategorieBouton(){
     //création des autres boutons
     const categories = await boutonCategorie() // Récupère les catégories
     categories.forEach((categorie) => {
-        const btn = document.createElement("button"); // Crée un nouveau bouton pour la catégorie
-        btn.textContent = categorie.name; // Met le nom de la catégorie pour le texte du bouton
+        const btn = document.createElement("button") // Crée un nouveau bouton pour la catégorie
+        btn.textContent = categorie.name // Met le nom de la catégorie pour le texte du bouton
         btn.classList.add("boutonsFiltre")
-        btn.id = categorie.id; // Attribue l'ID de la catégorie au bouton
-        filtres.appendChild(btn); // Ajoute le bouton de catégorie à l'élément des filtres
+        btn.id = categorie.id // Attribue l'ID de la catégorie au bouton
+        filtres.appendChild(btn) // Ajoute le bouton de catégorie à l'élément des filtres
     })
 } 
 displayCategorieBouton()
@@ -86,18 +86,18 @@ displayCategorieBouton()
     boutons.forEach((bouton) => {
         bouton.addEventListener("click", () => {
             // Récupère l'ID de la catégorie à filtrer
-            let btnID = parseInt(bouton.id);
+            let btnID = parseInt(bouton.id)
             // Filtre les éléments selon la catégorie
-            let filtreWorks;
+            let filtreWorks
             if (btnID === 0) {
                 // Si l'ID est 0, on affiche tous les projets
-                filtreWorks = works;
+                filtreWorks = works
             } else {
                 // Sinon, on filtre les projets selon la catégorie
-                filtreWorks = works.filter(work => work.categoryId === btnID);
+                filtreWorks = works.filter(work => work.categoryId === btnID)
             }
             // Mise à jour de la galerie avec les éléments filtrés
-            let displayFiltre = '';
+            let displayFiltre = ''
             for (let figure of filtreWorks) {
                 displayFiltre += `
                     <figure>
@@ -143,7 +143,7 @@ function editionMode() {
 	document.body.prepend(bannerEdition).insertAdjacentHTML("beforeend", banner)
     // Masque tous les boutons de catégorie pour simplifier l'interface en mode édition
     btnsCategories.forEach(btn => {
-        btn.style.display = "none";
+        btn.style.display = "none"
     });
 }
 
