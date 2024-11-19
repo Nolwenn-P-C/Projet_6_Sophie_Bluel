@@ -243,6 +243,26 @@ nav a.active {
 	margin-bottom: 40px;
 }
 
+body.banner-active .header {
+    margin-top: 109px; /* Ajoute un espace uniquement quand la bannière est présente */
+}
+
+.banner-edition{
+	width: 100%;
+	background-color: black;
+	height: 59px;
+	font-size: 14px;
+	color: white;
+	text-align: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 20px;
+	position: fixed;
+	top:0;
+	left: 0;
+}
+
 
 
 
