@@ -1,5 +1,16 @@
 //*************************************************************************************************************************/
-//**************************************************Récupération des API **************************************************/
+//********************************************************* Init **********************************************************/
+//*************************************************************************************************************************/
+
+const filtres = document.querySelector(".filtres")
+const logInOutBtn =  document.querySelector(".logInOut")
+const token = localStorage.getItem("token")
+const userId = localStorage.getItem("userId")
+const lienModale = document.querySelector(".lien-modale")
+
+
+//*************************************************************************************************************************/
+//************************************************* Récupération des API **************************************************/
 //*************************************************************************************************************************/
 
  async function boutonCategorie(){
@@ -21,7 +32,7 @@ getWorks()
 
 
 //*************************************************************************************************************************/
-//***************************************************Affichage des projets ************************************************/
+//************************************************** Affichage des projets ************************************************/
 //*************************************************************************************************************************/
 
 async function mesProjets(){
@@ -48,10 +59,8 @@ mesProjets()
 
 
 //*************************************************************************************************************************/
-//**********************************************Création des boutons filtres **********************************************/
+//********************************************* Création des boutons filtres **********************************************/
 //*************************************************************************************************************************/
-
-const filtres = document.querySelector(".filtres")
 
 async function displayCategorieBouton(){
     
@@ -78,12 +87,13 @@ async function displayCategorieBouton(){
 
 
 //*************************************************************************************************************************/
-//****************************************Affichage et fonctionnement des filtres *****************************************/
+//*************************************** Affichage et fonctionnement des filtres *****************************************/
 //*************************************************************************************************************************/
 
- async function filtreCategorie() {
+async function filtreCategorie() {
     const works = await getWorks() // Récupère tous les projets pour appliquer les filtres
     const boutons = document.querySelectorAll(".filtres button") // Sélectionne tous les boutons de filtres
+    const gallery = document.querySelector('.gallery') // Sélectionne la galerie
 
     // Parcourt chaque bouton et lui ajoute un écouteur d'événements "click"
     boutons.forEach((bouton) => {
@@ -91,7 +101,7 @@ async function displayCategorieBouton(){
             // Récupère l'ID de la catégorie à filtrer
             let btnID = parseInt(bouton.id)
             // Filtre les éléments selon la catégorie
-            let filtreWorks
+            let filtreWorks;
             if (btnID === 0) {
                 // Si l'ID est 0, on affiche tous les projets
                 filtreWorks = works
@@ -99,39 +109,37 @@ async function displayCategorieBouton(){
                 // Sinon, on filtre les projets selon la catégorie
                 filtreWorks = works.filter(work => work.categoryId === btnID)
             }
+            // Supprime tous les enfants existants de la galerie
+            while (gallery.firstChild) {
+                gallery.removeChild(gallery.firstChild)
+            }
             // Mise à jour de la galerie avec les éléments filtrés
             let displayFiltre = ''
             for (let figure of filtreWorks) {
                 displayFiltre += `
                     <figure>
                         <img src="${figure.imageUrl}" alt="${figure.title}">
-                        <figcaption> ${figure.title} </figcaption>
+                        <figcaption> {figure.title}" </figcaption>
                     </figure>
                 `
             }
-            document.querySelector('.gallery').innerHTML = displayFiltre; // Remplace le contenu de la galerie
-        });
-    });
+            gallery.insertAdjacentHTML('beforeend', displayFiltre)
+        })
+    })
 }
-filtreCategorie()
 
+filtreCategorie()
 
 //*************************************************************************************************************************/
 //************************************************** Bouton Logout/LogIn **************************************************/
 //*************************************************************************************************************************/
-
-
-const logInOutBtn =  document.querySelector(".logInOut")
-const token = localStorage.getItem("token")
-const userId = localStorage.getItem("userId")
-const boutonsFiltre = document.querySelectorAll(" .boutonsFiltre") // Sélectionne tous les boutons de filtres
 
 async function main() {
     if (token) {
         editionMode(); // Active le mode édition si nécessaire
         logOut()
     }
-    else displayCategorieBouton(); // Ne sera exécutée que si le mode édition n'est pas activé
+    else displayCategorieBouton() // Ne sera exécutée que si le mode édition n'est pas activé
 }
 main();
 
@@ -148,8 +156,8 @@ function editionMode() {
     //Ajoute le contenu HTML défini dans banner dans bannerEdit
     bannerEdition.insertAdjacentHTML("beforeend", banner) 
     // Ajoute une classe au body pour signaler que la bannière est présente
-    document.body.classList.add("banner-active");
-   
+    document.body.classList.add("banner-active")
+    lienModale.style.visibility = "visible"
 }
 
 //fonction pour se déconnecter
@@ -163,6 +171,6 @@ function logOut() {
         // Redirige l'utilisateur vers la page d'accueil (index.html) après la déconnexion
 		window.location.href = "index.html" 
         // Si l'utilisateur n'est pas connecté, assure que le bouton est bien en "login"
-        logInOutBtn.textContent = "login";
+        logInOutBtn.textContent = "login"
 	})
 }
