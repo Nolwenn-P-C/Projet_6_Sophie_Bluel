@@ -38,11 +38,26 @@
 	<section id="portfolio">
 		<h2>
 			Mes Projets 
-			<a class="lien-modale" href="#modal"><i class="fa-regular fa-pen-to-square"></i> modifier</a>
+			<a class="js-modale lien-modale" href="#modale"><i class="fa-regular fa-pen-to-square"></i> modifier</a>
 		</h2> 
 		<div class="filtres">
+			<!--Géré par JavaScript-->
 		</div>
 		<div class="gallery">
+			<!--Géré par JavaScript-->
+		</div>
+	</section>
+	<section id="modale" class="modale " aria-hidden="true" role="dialog" style="display: none;" aria-labelledby="modale-titre">
+		<div class="modale-conteneur js-modale-stop">
+			<button class="fermer-modale"><i class="fa-solid fa-xmark"></i></button>
+			<h3 id="modale-titre">Galerie photo</h3>
+		
+			<div class="modale-gallerie" id="modaleGallerie">
+				<!--Géré par JavaScript-->
+			</div>
+			<div class="bordure"></div>
+			<input type="submit" id="ajout-photo-modale" value="Ajouter une photo">
+			</div>
 		</div>
 	</section>
 	<section id="contact">
