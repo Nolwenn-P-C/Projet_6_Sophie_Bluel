@@ -248,7 +248,7 @@ body.banner-active .header {
 }
 
 .banner-edition{
-	width: 100%;
+	
 	background-color: black;
 	height: 59px;
 	font-size: 14px;
@@ -258,9 +258,8 @@ body.banner-active .header {
 	align-items: center;
 	justify-content: center;
 	gap: 20px;
-	position: fixed;
-	top:0;
-	left: 0;
+    width: 100vw; /* 100% de la largeur de la fenêtre */
+    margin-left: calc(50% - 50vw); /* Centrer l'élément */
 }
 
 .lien-modale {
@@ -285,19 +284,20 @@ body.banner-active .header {
 	top: 0;
 	left:0;
 	width:100%;
-	height: 100%;
-	background: rgba(0,0,0,0.8);
+	height: 90%;
+	background: rgba(0,0,0,0.5);
 	flex-direction: column;
 }
 
 .modale-conteneur{
 	overflow:auto;
 	width:630px;
+	height: 688px;
 	max-width: calc(100vw- 20px);
 	max-height: calc(100vh- 20px);
 	padding:20px;
 	background-color: #FFF;
-
+	border-radius: 10px;
 }
 
 .fermer-modale {
@@ -334,4 +334,19 @@ body.banner-active .header {
 	color: white;
 	background-color:#1D6154 ;
 	border-radius: 60px;
+}
+
+.modale-gallerie {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	gap : 10px ;
+	margin: 30px 100px 30px 100px;
+	padding-top: 25px;
+	padding-bottom: 70px;
+    border-bottom: 1px solid #B3B3B3;
+}
+.modale-gallerie img {
+	width: 76px;
+	height: 102px;
 }

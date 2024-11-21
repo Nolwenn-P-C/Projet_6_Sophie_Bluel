@@ -22,7 +22,7 @@ const lienModale = document.querySelector(".lien-modale")
 boutonCategorie()
 
 
-async function getWorks (){
+export async function getWorks (){
     // Récupère les données des projets depuis l'API
     let a = await fetch("http://localhost:5678/api/works")
     let works = await a.json()
@@ -39,20 +39,20 @@ async function mesProjets(){
     try{
         // Récupère les données des projets
         let works = await getWorks()
-        let display = ''
+        let afficher = ''
         // Parcourt chaque projet (figure) et crée un bloc HTML pour l'affichage
         for (let figure of works){
             console.log(figure) // Affiche chaque projet dans la console pour vérification
             
-            // Ajoute le code HTML de la figure dans la variable `display`
-            display += `
+            // Ajoute le code HTML de la figure dans la variable `afficher`
+            afficher += `
                 <figure>
                     <img src="${figure.imageUrl}" alt="${figure.title}">
                     <figcaption> ${figure.title} </figcaption>
                 </figure>
             `
         }
-        document.querySelector('.gallery').insertAdjacentHTML("beforeend", display) // insertion des éléments dans la galerie
+        document.querySelector('.gallery').insertAdjacentHTML("beforeend", afficher) // insertion des éléments dans la galerie
     }catch (err) {console.log(err)} // Affiche l'erreur en cas de problème
 }
 mesProjets()
