@@ -1,8 +1,10 @@
-// // Importer la fonction getWork depuis index.js
-// import { getWork } from './index.js'
+//*************************************************************************************************************************/
+//************************************************* Récupération des API **************************************************/
+//*************************************************************************************************************************/
 
-// // Utiliser la fonction getWork
-// getWork()
+import { getWorks,  } from './API.js'
+getWorks()
+
 
 //*************************************************************************************************************************/
 //********************************************** Ouverture Fermeture Modale ***********************************************/
@@ -77,14 +79,6 @@ window.addEventListener('keydown', function (e) {
 //*************************************************** Première modale *****************************************************/
 //*************************************************************************************************************************/
 
-async function getWorks (){
-    // Récupère les données des projets depuis l'API
-    let a = await fetch("http://localhost:5678/api/works")
-    let works = await a.json()
-    return works // Retourne les données pour les utiliser ailleurs
-}
-getWorks()
-
 async function afficherTravauxDansModale (){
     try{
         // Récupère les données des projets
@@ -98,6 +92,7 @@ async function afficherTravauxDansModale (){
             afficher += `
                 <figure>
                     <img src="${figure.imageUrl}" alt="${figure.title}">
+                    <i class="fa-solid fa-trash-can"></i>
                 </figure>
             `
         }
@@ -105,3 +100,19 @@ async function afficherTravauxDansModale (){
     }catch (err) {console.log(err)} // Affiche l'erreur en cas de problème
 }
 afficherTravauxDansModale ()
+
+
+// const iconeCorbeille = document.querySelector("".fa-trash-can")
+// iconeCorbeille.addEventListener("click", function (event) {
+//     event.preventDefault()
+//     supprimerTravaux()
+// })
+
+// async function supprimertravaux(){
+//     try{
+//         let supprimer = await supprimerWorks()
+
+//     } catch (err) {
+//         console.log(err)
+//     } // Affiche l'erreur en cas de problème
+// }

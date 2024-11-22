@@ -13,23 +13,9 @@ const lienModale = document.querySelector(".lien-modale")
 //************************************************* Récupération des API **************************************************/
 //*************************************************************************************************************************/
 
- async function boutonCategorie(){
-    // Récupère les données des catégories depuis l'API
-    const reponse = await fetch("http://localhost:5678/api/categories")
-    let categories = await reponse.json()
-    return categories // Retourne les catégories pour les utiliser ailleurs
-}
-boutonCategorie()
-
-
-export async function getWorks (){
-    // Récupère les données des projets depuis l'API
-    let a = await fetch("http://localhost:5678/api/works")
-    let works = await a.json()
-    return works // Retourne les données pour les utiliser ailleurs
-}
+import { getWorks, boutonCategorie } from './API.js'
 getWorks()
-
+boutonCategorie()
 
 //*************************************************************************************************************************/
 //************************************************** Affichage des projets ************************************************/
@@ -53,7 +39,9 @@ async function mesProjets(){
             `
         }
         document.querySelector('.gallery').insertAdjacentHTML("beforeend", afficher) // insertion des éléments dans la galerie
-    }catch (err) {console.log(err)} // Affiche l'erreur en cas de problème
+    }catch (err) {
+        console.log(err)
+    } // Affiche l'erreur en cas de problème
 }
 mesProjets()
 
