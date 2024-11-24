@@ -2,7 +2,7 @@
 //************************************************* Récupération des API **************************************************/
 //*************************************************************************************************************************/
 
-import { getWorks } from './API.js'
+import { getWorks, supprimerTravauxApi } from './API.js'
 import { mesProjets } from './index.js'
 
 //*************************************************************************************************************************/
@@ -82,10 +82,10 @@ const gallerieModale = document.querySelector('.modale-gallerie')
 
 async function afficherTravauxDansModale() {
     try {
-        let works = await getWorks()
-        let afficher = ''
+        let works = await getWorks() // Récupère les travaux depuis l'API
+        let afficher = '' //Initialise une chaîne vide pour construire le HTML
         for (let figure of works) {
-            console.log(figure)
+            console.log(figure) // Affiche chaque travail dans la console pour vérification
             afficher += `
                 <figure data-id="${figure.id}">
                     <img src="${figure.imageUrl}" alt="${figure.title}">
@@ -93,36 +93,32 @@ async function afficherTravauxDansModale() {
                 </figure>
             `
         }
-        gallerieModale.innerHTML = afficher // Met à jour le contenu de la galerie modale
+        //vide la galerie modale avant d'ajouter les nouveaux éléments
+        while (gallerieModale.firstChild) {
+            gallerieModale.removeChild(gallerieModale.firstChild)
+        }
+        gallerieModale.insertAdjacentHTML("beforeend", afficher) // Insertion des éléments dans la galerie
 
         // Ajouter les écouteurs d'événements pour les icônes corbeille
         document.querySelectorAll('.fa-trash-can').forEach(icon => {
             icon.addEventListener("click", function (e) {
                 e.preventDefault()
                 const workId = e.target.closest('figure').dataset.id
-                supprimerWorks(workId)
+                supprimerWorks(workId) // Appelle la fonction pour supprimer le travail
             })
         })
     } catch (err) {
-        console.log(err)
+        console.log(err) // Affiche l'erreur en cas de problème
     }
 }
 afficherTravauxDansModale()
 
-const token = localStorage.getItem("token")
-
 async function supprimerWorks(id) {
     try {
-        const response = await fetch(`http://localhost:5678/api/works/${id}`, {
-            method: "DELETE",
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        })
-        if (!response.ok) throw new Error("Échec de la suppression du travail")
-        console.log("Travail supprimé avec succès !")
-        await mesProjets() // Met à jour la galerie principale
+        await supprimerTravauxApi(id) // Appelle la fonction API pour supprimer le travail
+        console.log("Travail supprimé avec succès !") // Affiche un message de succès dans la console
         await afficherTravauxDansModale() // Met à jour la galerie dans la modale
+        await mesProjets() // Met à jour la galerie principale
     } catch (error) {
         console.error("Erreur lors de la suppression :", error)
     }
