@@ -15,11 +15,15 @@ export async function getWorks (){
 }
 getWorks()
 
-
-export async function supprimerWorks(id){
-    // Récupère les données des catégories depuis l'API
-    const reponse = await fetch(`http://localhost:5678/api/works/${id}`)
-    let supprimer = await reponse.json()
-    return supprimer // Retourne les catégories pour les utiliser ailleurs
+export async function supprimerTravauxApi(id){
+    const token = localStorage.getItem("token")
+    // Récupère les données des projets depuis l'API
+    const supprimer = await fetch(`http://localhost:5678/api/works/${id}`, {
+        method: "DELETE",
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    })
+    if (!supprimer.ok) throw new Error("Échec de la suppression du travail") // Vérifie si la réponse est OK, sinon lance une erreur
+    return supprimer // Retourne les données pour les utiliser ailleurs
 }
-supprimerWorks()

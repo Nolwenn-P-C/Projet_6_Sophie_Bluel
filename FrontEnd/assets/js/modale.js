@@ -2,9 +2,8 @@
 //************************************************* Récupération des API **************************************************/
 //*************************************************************************************************************************/
 
-import { getWorks,  } from './API.js'
-getWorks()
-
+import { getWorks, supprimerTravauxApi } from './API.js'
+import { mesProjets } from './index.js'
 
 //*************************************************************************************************************************/
 //********************************************** Ouverture Fermeture Modale ***********************************************/
@@ -15,12 +14,12 @@ const selectionFocusable = 'button, a, input, textarea' // Sélecteurs des élé
 let focusables = [] // Tableau qui contiendra tous les éléments focusables de la modale
 
 const ouvertureModale = function (e) {
-    e.preventDefault() 
+    e.preventDefault()
     modale = document.querySelector(e.target.getAttribute('href')) // Sélectionne la modale cible via l'attribut href du lien cliqué
     focusables = Array.from(modale.querySelectorAll(selectionFocusable)) // Récupère tous les éléments focusables de la modale
     focusables[0].focus() // Place le focus sur le premier élément focusable de la modale
-    modale.style.display = null // Affiche la modale 
-    modale.removeAttribute("aria-hidden") // Indique que la modale n'est plus cachée 
+    modale.style.display = null // Affiche la modale
+    modale.removeAttribute("aria-hidden") // Indique que la modale n'est plus cachée
     modale.setAttribute("aria-modal", "true") // Indique que la modale est active et qu’elle bloque l’arrière-plan
 
     // Ajoute les gestionnaires d'événements pour fermer la modale ou empêcher sa fermeture
@@ -31,9 +30,9 @@ const ouvertureModale = function (e) {
 
 const fermetureModale = function (e) {
     if (modale === null) return // Si aucune modale n'est ouverte, ne fait rien
-    e.preventDefault() 
+    e.preventDefault()
     modale.style.display = "none" // Cache la modale
-    modale.setAttribute("aria-hidden", "true") // Indique que la modale est à nouveau cachée 
+    modale.setAttribute("aria-hidden", "true") // Indique que la modale est à nouveau cachée
     modale.removeAttribute("aria-modal") // Retire l'indication que la modale est active
     modale.removeEventListener('click', fermetureModale) // Supprime l'écouteur pour fermer la modale en cliquant à l'extérieur
     modale.querySelector('.fermer-modale').removeEventListener('click', fermetureModale) // Supprime l'écouteur du bouton de fermeture
@@ -46,7 +45,7 @@ const stopPropagation = function (e) {
 }
 
 const focusModale = function(e) {
-    e.preventDefault() 
+    e.preventDefault()
     let index = focusables.findIndex(f => f === modale.querySelector(':focus')) // Trouve l'index de l'élément actuellement focusé dans la liste des éléments focusables
     if (e.shift === true) { // Si la touche Shift est enfoncée (navigation inverse)
         index-- // Décrémente l'index pour aller à l'élément précédent
@@ -62,7 +61,7 @@ const focusModale = function(e) {
     focusables[index].focus() // Place le focus sur l'élément calculé
 }
 
-document.querySelectorAll('.js-modale').forEach(a => { 
+document.querySelectorAll('.js-modale').forEach(a => {
     a.addEventListener('click', ouvertureModale) // Ajoute un gestionnaire d'événements pour ouvrir la modale sur tous les liens ayant la classe js-modale
 })
 
@@ -76,43 +75,51 @@ window.addEventListener('keydown', function (e) {
 })
 
 //*************************************************************************************************************************/
-//*************************************************** Première modale *****************************************************/
+//************************************************ Supprimer des projets **************************************************/
 //*************************************************************************************************************************/
 
-async function afficherTravauxDansModale (){
-    try{
-        // Récupère les données des projets
-        let works = await getWorks()
-        let afficher = ''
-        // Parcourt chaque projet (figure) et crée un bloc HTML pour l'affichage
-        for (let figure of works){
-            console.log(figure) // Affiche chaque projet dans la console pour vérification
-            
-            // Ajoute le code HTML de la figure dans la variable `afficher`
+const gallerieModale = document.querySelector('.modale-gallerie')
+
+async function afficherTravauxDansModale() {
+    try {
+        let works = await getWorks() // Récupère les travaux depuis l'API
+        let afficher = '' //Initialise une chaîne vide pour construire le HTML
+        for (let figure of works) {
+            console.log(figure) // Affiche chaque travail dans la console pour vérification
             afficher += `
-                <figure>
+                <figure data-id="${figure.id}">
                     <img src="${figure.imageUrl}" alt="${figure.title}">
                     <i class="fa-solid fa-trash-can"></i>
                 </figure>
             `
         }
-        document.querySelector('.modale-gallerie').insertAdjacentHTML("beforeend", afficher) // insertion des éléments dans la galerie
-    }catch (err) {console.log(err)} // Affiche l'erreur en cas de problème
+        //vide la galerie modale avant d'ajouter les nouveaux éléments
+        while (gallerieModale.firstChild) {
+            gallerieModale.removeChild(gallerieModale.firstChild)
+        }
+        gallerieModale.insertAdjacentHTML("beforeend", afficher) // Insertion des éléments dans la galerie
+
+        // Ajouter les écouteurs d'événements pour les icônes corbeille
+        document.querySelectorAll('.fa-trash-can').forEach(icon => {
+            icon.addEventListener("click", function (e) {
+                e.preventDefault()
+                const workId = e.target.closest('figure').dataset.id
+                supprimerWorks(workId) // Appelle la fonction pour supprimer le travail
+            })
+        })
+    } catch (err) {
+        console.log(err) // Affiche l'erreur en cas de problème
+    }
 }
-afficherTravauxDansModale ()
+afficherTravauxDansModale()
 
-
-// const iconeCorbeille = document.querySelector("".fa-trash-can")
-// iconeCorbeille.addEventListener("click", function (event) {
-//     event.preventDefault()
-//     supprimerTravaux()
-// })
-
-// async function supprimertravaux(){
-//     try{
-//         let supprimer = await supprimerWorks()
-
-//     } catch (err) {
-//         console.log(err)
-//     } // Affiche l'erreur en cas de problème
-// }
+async function supprimerWorks(id) {
+    try {
+        await supprimerTravauxApi(id) // Appelle la fonction API pour supprimer le travail
+        console.log("Travail supprimé avec succès !") // Affiche un message de succès dans la console
+        await afficherTravauxDansModale() // Met à jour la galerie dans la modale
+        await mesProjets() // Met à jour la galerie principale
+    } catch (error) {
+        console.error("Erreur lors de la suppression :", error)
+    }
+}
