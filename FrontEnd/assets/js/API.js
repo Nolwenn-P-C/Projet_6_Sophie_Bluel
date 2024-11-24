@@ -16,10 +16,3 @@ export async function getWorks (){
 getWorks()
 
 
-export async function supprimerWorks(id){
-    // Récupère les données des catégories depuis l'API
-    const reponse = await fetch(`http://localhost:5678/api/works/${id}`)
-    let supprimer = await reponse.json()
-    return supprimer // Retourne les catégories pour les utiliser ailleurs
-}
-supprimerWorks()

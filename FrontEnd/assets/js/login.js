@@ -6,6 +6,8 @@
     const logInFormulaire = document.querySelector(".logInFormulaire")
     // Ajoute un écouteur d'événements sur le formulaire pour détecter la soumission
 
+    
+
     logInFormulaire.addEventListener("submit", async (event) => {
         // Empêche le comportement par défaut de rechargement de la page lors de la soumission du formulaire
         event.preventDefault()
@@ -53,3 +55,12 @@
     })
 }
 connexion()
+
+document.addEventListener("DOMContentLoaded", function () {
+    const formulaire = document.querySelector(".logInFormulaire")
+    if (!formulaire) {
+        console.error("Le formulaire de connexion est introuvable dans le DOM")
+    } else {
+        console.log("Formulaire trouvé", formulaire)
+    }
+})

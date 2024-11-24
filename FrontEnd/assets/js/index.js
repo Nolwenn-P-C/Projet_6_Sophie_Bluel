@@ -14,14 +14,12 @@ const lienModale = document.querySelector(".lien-modale")
 //*************************************************************************************************************************/
 
 import { getWorks, boutonCategorie } from './API.js'
-getWorks()
-boutonCategorie()
 
 //*************************************************************************************************************************/
 //************************************************** Affichage des projets ************************************************/
 //*************************************************************************************************************************/
 
-async function mesProjets(){
+export async function mesProjets(){
     try{
         // Récupère les données des projets
         let works = await getWorks()
