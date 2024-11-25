@@ -180,10 +180,17 @@ input[type="submit"]{
 	border-radius: 60px ;
 }
 
+footer{
+	max-width: none; /* Annule la limite de largeur héritée du body */	
+
+}
+
 footer nav ul {
+	width: 100%; /* Étend le footer sur toute la largeur */
 	display: flex;
 	justify-content: flex-end;
-	margin: 2em
+	padding: 2em;
+	background-color: #FFF;
 }
 
 html{
@@ -230,12 +237,25 @@ nav a.active {
 }
 
 #login-page {
-    width: 1440px;
-    height: 1024px;
+    min-height: 100vh; 
+    position: relative; /* Permet à l'absolu du footer de se référer ici */
+    display: flex;
+    flex-direction: column; 
+}
+
+#login-page main {
+    flex: 1; /* Prend l'espace disponible, repousse le footer en bas */
 }
 
 #logIn h2 {
 	padding-top: 25px;
+}
+
+#login-page footer {
+	margin:0;
+	padding:0;
+    width: 100%; /* Occupe toute la largeur */
+    
 }
 
 .message-erreur{

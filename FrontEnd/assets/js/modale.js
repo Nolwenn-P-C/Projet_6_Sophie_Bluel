@@ -123,3 +123,47 @@ async function supprimerWorks(id) {
         console.error("Erreur lors de la suppression :", error)
     }
 }
+
+//*************************************************************************************************************************/
+//************************************************* Ajouter des projets ***************************************************/
+//*************************************************************************************************************************/
+
+// async function modaleSuivante() {
+//     const btnAjouterPhoto = document.querySelector('#ajout-photo-modale')
+//     btnAjouterPhoto.addEventListener("click", function (e) {
+//         e.preventDefault()
+//         modaleAjouterPhoto()
+//     })
+// }
+// modaleSuivante()
+
+// const modaleConteneur = document.querySelector('.modale-conteneur')
+
+// modaleAjouterPhoto(){
+//     let afficher = ''
+//     afficher += `
+//         <div class="icone">
+//             <button class="modale-précédente"><i class="fa-solid fa-arrow-left" ></i></button>
+//             <button class="fermer-modale"><i class="fa-solid fa-xmark"></i></button>
+//         </div>
+//         <h3>Ajout photo</h3>
+// 		<!-- Formulaire d'ajout travail -->
+// 		<form id="formAddWork">
+//             <div class="containerAddPhoto">
+//                 <i class="fa-regular fa-image"></i>
+//                 <label for="file" class="labelFile">+ Ajouter photo</label>
+//                 <p>jpg, png : 4mo max</p>
+//                 <input type="file" name="image" id="file" accept="image/jpg, image/png" required style="display: none;">
+//                 <img id="previewImage" src="#" alt="Aperçu de l'image" style="display: none;">
+//             </div>
+//             <label for="title">Titre</label>
+//             <input type="text" name="title" id="title" required>
+//             <label for="categoryInput">Catégorie</label>
+//             <select id="categoryInput" name="category" required></select>
+//             <div class="border-line"></div>
+//             <button type="submit" id="addWorkButton">Valider</button>
+//         </form>
+//     `
+//     modaleConteneur.insertAdjacentHTML("beforeend", afficher) 
+
+// }
