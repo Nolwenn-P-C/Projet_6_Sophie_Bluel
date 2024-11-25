@@ -16,6 +16,7 @@ let focusables = [] // Tableau qui contiendra tous les éléments focusables de 
 const ouvertureModale = function (e) {
     e.preventDefault()
     modale = document.querySelector(e.target.getAttribute('href')) // Sélectionne la modale cible via l'attribut href du lien cliqué
+    if (!modale) return // Si la modale n'existe pas, ne fait rien
     focusables = Array.from(modale.querySelectorAll(selectionFocusable)) // Récupère tous les éléments focusables de la modale
     focusables[0].focus() // Place le focus sur le premier élément focusable de la modale
     modale.style.display = null // Affiche la modale
@@ -24,8 +25,8 @@ const ouvertureModale = function (e) {
 
     // Ajoute les gestionnaires d'événements pour fermer la modale ou empêcher sa fermeture
     modale.addEventListener('click', fermetureModale) // Ferme la modale lorsqu'on clique en dehors de son contenu
-    modale.querySelector('.fermer-modale').addEventListener('click', fermetureModale) // Ferme la modale en cliquant sur le bouton de fermeture
-    modale.querySelector('.js-modale-stop').addEventListener('click', stopPropagation) // Empêche la fermeture de la modale lorsqu'on clique sur son contenu
+    modale.querySelectorAll('.fermer-modale').forEach(btn => btn.addEventListener('click', fermetureModale)) // Ferme la modale en cliquant sur le bouton de fermeture
+    modale.querySelectorAll('.js-modale-stop').forEach(btn => btn.addEventListener('click', stopPropagation)) // Empêche la fermeture de la modale lorsqu'on clique sur son contenu
 }
 
 const fermetureModale = function (e) {
@@ -35,8 +36,8 @@ const fermetureModale = function (e) {
     modale.setAttribute("aria-hidden", "true") // Indique que la modale est à nouveau cachée
     modale.removeAttribute("aria-modal") // Retire l'indication que la modale est active
     modale.removeEventListener('click', fermetureModale) // Supprime l'écouteur pour fermer la modale en cliquant à l'extérieur
-    modale.querySelector('.fermer-modale').removeEventListener('click', fermetureModale) // Supprime l'écouteur du bouton de fermeture
-    modale.querySelector('.js-modale-stop').removeEventListener('click', stopPropagation) // Supprime l'écouteur pour empêcher la fermeture en cliquant dans la modale
+    modale.querySelectorAll('.fermer-modale').forEach(btn => btn.removeEventListener('click', fermetureModale)) // Supprime l'écouteur du bouton de fermeture
+    modale.querySelectorAll('.js-modale-stop').forEach(btn => btn.removeEventListener('click', stopPropagation)) // Supprime l'écouteur pour empêcher la fermeture en cliquant dans la modale
     modale = null // Réinitialise la variable modale à null
 }
 
@@ -74,14 +75,18 @@ window.addEventListener('keydown', function (e) {
     }
 })
 
+
 //*************************************************************************************************************************/
 //************************************************ Supprimer des projets **************************************************/
 //*************************************************************************************************************************/
 
 const gallerieModale = document.querySelector('.modale-gallerie')
+const modaleSupprimerTravaux = document.querySelector('#modale1')
+const modaleAjouterTravaux = document.querySelector('#modale2')
 
 async function afficherTravauxDansModale() {
     try {
+        modaleAjouterTravaux.style.display = "none"
         let works = await getWorks() // Récupère les travaux depuis l'API
         let afficher = '' //Initialise une chaîne vide pour construire le HTML
         for (let figure of works) {
@@ -123,3 +128,32 @@ async function supprimerWorks(id) {
         console.error("Erreur lors de la suppression :", error)
     }
 }
+
+//*************************************************************************************************************************/
+//************************************************* Changement de modale **************************************************/
+//*************************************************************************************************************************/
+
+function modaleSuivante() {
+    const btnAjouterPhoto = document.querySelector('#ajout-photo-modale')
+    btnAjouterPhoto.addEventListener("click", function (e) {
+        e.preventDefault()
+        modaleSupprimerTravaux.style.display = "none"
+        modaleAjouterTravaux.style.removeProperty("display")
+    })
+}
+modaleSuivante()
+
+function modalePrécédente() {
+    const btnModalePrécédente = document.querySelector('.modale-précédente')
+    btnModalePrécédente.addEventListener("click", function (e) {
+        e.preventDefault()
+        modaleAjouterTravaux.style.display = "none"
+        modaleSupprimerTravaux.style.removeProperty("display")
+        afficherTravauxDansModale()
+    })
+}
+modalePrécédente()
+
+//*************************************************************************************************************************/
+//************************************************* Ajout photo travaux ***************************************************/
+//*************************************************************************************************************************/
