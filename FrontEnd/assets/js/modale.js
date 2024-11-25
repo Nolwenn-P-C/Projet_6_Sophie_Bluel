@@ -16,6 +16,7 @@ let focusables = [] // Tableau qui contiendra tous les éléments focusables de 
 const ouvertureModale = function (e) {
     e.preventDefault()
     modale = document.querySelector(e.target.getAttribute('href')) // Sélectionne la modale cible via l'attribut href du lien cliqué
+    if (!modale) return // Si la modale n'existe pas, ne fait rien
     focusables = Array.from(modale.querySelectorAll(selectionFocusable)) // Récupère tous les éléments focusables de la modale
     focusables[0].focus() // Place le focus sur le premier élément focusable de la modale
     modale.style.display = null // Affiche la modale
@@ -24,8 +25,8 @@ const ouvertureModale = function (e) {
 
     // Ajoute les gestionnaires d'événements pour fermer la modale ou empêcher sa fermeture
     modale.addEventListener('click', fermetureModale) // Ferme la modale lorsqu'on clique en dehors de son contenu
-    modale.querySelector('.fermer-modale').addEventListener('click', fermetureModale) // Ferme la modale en cliquant sur le bouton de fermeture
-    modale.querySelector('.js-modale-stop').addEventListener('click', stopPropagation) // Empêche la fermeture de la modale lorsqu'on clique sur son contenu
+    modale.querySelectorAll('.fermer-modale').forEach(btn => btn.addEventListener('click', fermetureModale)) // Ferme la modale en cliquant sur le bouton de fermeture
+    modale.querySelectorAll('.js-modale-stop').forEach(btn => btn.addEventListener('click', stopPropagation)) // Empêche la fermeture de la modale lorsqu'on clique sur son contenu
 }
 
 const fermetureModale = function (e) {
@@ -35,8 +36,8 @@ const fermetureModale = function (e) {
     modale.setAttribute("aria-hidden", "true") // Indique que la modale est à nouveau cachée
     modale.removeAttribute("aria-modal") // Retire l'indication que la modale est active
     modale.removeEventListener('click', fermetureModale) // Supprime l'écouteur pour fermer la modale en cliquant à l'extérieur
-    modale.querySelector('.fermer-modale').removeEventListener('click', fermetureModale) // Supprime l'écouteur du bouton de fermeture
-    modale.querySelector('.js-modale-stop').removeEventListener('click', stopPropagation) // Supprime l'écouteur pour empêcher la fermeture en cliquant dans la modale
+    modale.querySelectorAll('.fermer-modale').forEach(btn => btn.removeEventListener('click', fermetureModale)) // Supprime l'écouteur du bouton de fermeture
+    modale.querySelectorAll('.js-modale-stop').forEach(btn => btn.removeEventListener('click', stopPropagation)) // Supprime l'écouteur pour empêcher la fermeture en cliquant dans la modale
     modale = null // Réinitialise la variable modale à null
 }
 
@@ -74,14 +75,18 @@ window.addEventListener('keydown', function (e) {
     }
 })
 
+
 //*************************************************************************************************************************/
 //************************************************ Supprimer des projets **************************************************/
 //*************************************************************************************************************************/
 
 const gallerieModale = document.querySelector('.modale-gallerie')
+const modaleSupprimerTravaux = document.querySelector('#modale1')
+const modaleAjouterTravaux = document.querySelector('#modale2')
 
 async function afficherTravauxDansModale() {
     try {
+        modaleAjouterTravaux.style.display = "none"
         let works = await getWorks() // Récupère les travaux depuis l'API
         let afficher = '' //Initialise une chaîne vide pour construire le HTML
         for (let figure of works) {
@@ -125,45 +130,30 @@ async function supprimerWorks(id) {
 }
 
 //*************************************************************************************************************************/
-//************************************************* Ajouter des projets ***************************************************/
+//************************************************* Changement de modale **************************************************/
 //*************************************************************************************************************************/
 
-// async function modaleSuivante() {
-//     const btnAjouterPhoto = document.querySelector('#ajout-photo-modale')
-//     btnAjouterPhoto.addEventListener("click", function (e) {
-//         e.preventDefault()
-//         modaleAjouterPhoto()
-//     })
-// }
-// modaleSuivante()
+function modaleSuivante() {
+    const btnAjouterPhoto = document.querySelector('#ajout-photo-modale')
+    btnAjouterPhoto.addEventListener("click", function (e) {
+        e.preventDefault()
+        modaleSupprimerTravaux.style.display = "none"
+        modaleAjouterTravaux.style.removeProperty("display")
+    })
+}
+modaleSuivante()
 
-// const modaleConteneur = document.querySelector('.modale-conteneur')
+function modalePrécédente() {
+    const btnModalePrécédente = document.querySelector('.modale-précédente')
+    btnModalePrécédente.addEventListener("click", function (e) {
+        e.preventDefault()
+        modaleAjouterTravaux.style.display = "none"
+        modaleSupprimerTravaux.style.removeProperty("display")
+        afficherTravauxDansModale()
+    })
+}
+modalePrécédente()
 
-// modaleAjouterPhoto(){
-//     let afficher = ''
-//     afficher += `
-//         <div class="icone">
-//             <button class="modale-précédente"><i class="fa-solid fa-arrow-left" ></i></button>
-//             <button class="fermer-modale"><i class="fa-solid fa-xmark"></i></button>
-//         </div>
-//         <h3>Ajout photo</h3>
-// 		<!-- Formulaire d'ajout travail -->
-// 		<form id="formAddWork">
-//             <div class="containerAddPhoto">
-//                 <i class="fa-regular fa-image"></i>
-//                 <label for="file" class="labelFile">+ Ajouter photo</label>
-//                 <p>jpg, png : 4mo max</p>
-//                 <input type="file" name="image" id="file" accept="image/jpg, image/png" required style="display: none;">
-//                 <img id="previewImage" src="#" alt="Aperçu de l'image" style="display: none;">
-//             </div>
-//             <label for="title">Titre</label>
-//             <input type="text" name="title" id="title" required>
-//             <label for="categoryInput">Catégorie</label>
-//             <select id="categoryInput" name="category" required></select>
-//             <div class="border-line"></div>
-//             <button type="submit" id="addWorkButton">Valider</button>
-//         </form>
-//     `
-//     modaleConteneur.insertAdjacentHTML("beforeend", afficher) 
-
-// }
+//*************************************************************************************************************************/
+//************************************************* Ajout photo travaux ***************************************************/
+//*************************************************************************************************************************/

@@ -281,6 +281,14 @@ body.banner-active .header {
     margin-left: calc(50% - 50vw); /* Centrer l'élément */
 }
 
+.modale {
+    display: block;
+}
+
+.modale {
+    display: none;
+}
+
 .lien-modale {
 	font-family: 'Work Sans';
 	font-style: normal;
@@ -320,7 +328,7 @@ body.banner-active .header {
 	border-radius: 10px;
 }
 
-.fermer-modale {
+#modale1 .fermer-modale {
 	width: 100%;
 	display: flex;
 	justify-content:end;	
@@ -391,4 +399,22 @@ body.banner-active .header {
 	padding: 3px; 
 	cursor: pointer; 
 	
+}
+
+.modale-validation-ajout-photo{
+	display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin : 2em auto ;
+	width:237px;
+	height: 35px;
+	size:14px;
+	font-family: 'Syne';
+	font-weight: 700;
+	color: white;
+	background-color: #A7A7A7;
+	;
+	border-radius: 60px;
+
 }
