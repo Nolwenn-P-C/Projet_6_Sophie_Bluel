@@ -201,7 +201,13 @@ html footer{
 	background-color: white;
 }
 
-/* ********************* Ajout du code ********************* */
+/*************************************************************/
+/*********************** Ajout du code ***********************/
+/*************************************************************/
+
+
+/********************** Page principale **********************/
+
 nav a {
     text-decoration: none; 
     color: black; 
@@ -236,6 +242,8 @@ nav a.active {
 	color: white;
 }
 
+/************************* LogIn *****************************/
+
 #login-page {
     min-height: 100vh; 
     position: relative; /* Permet à l'absolu du footer de se référer ici */
@@ -254,14 +262,15 @@ nav a.active {
 #login-page footer {
 	margin:0;
 	padding:0;
-    width: 100%; /* Occupe toute la largeur */
-    
+    width: 100%; 
 }
 
 .message-erreur{
 	text-align:center;
 	margin-bottom: 40px;
 }
+
+/********************** Mode edition *************************/
 
 body.banner-active .header {
     margin-top: 109px; /* Ajoute un espace uniquement quand la bannière est présente */
@@ -277,9 +286,11 @@ body.banner-active .header {
 	align-items: center;
 	justify-content: center;
 	gap: 20px;
-    width: 100vw; /* 100% de la largeur de la fenêtre */
+    width: 100vw; 
     margin-left: calc(50% - 50vw); /* Centrer l'élément */
 }
+
+/************************ Modale 1 ***************************/
 
 .modale {
     display: block;
@@ -398,23 +409,102 @@ body.banner-active .header {
 	background-color: black; 
 	padding: 3px; 
 	cursor: pointer; 
-	
 }
 
-.modale-validation-ajout-photo{
-	display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-    margin : 2em auto ;
-	width:237px;
-	height: 35px;
-	size:14px;
-	font-family: 'Syne';
-	font-weight: 700;
-	color: white;
-	background-color: #A7A7A7;
-	;
-	border-radius: 60px;
+/************************ Modale 2 ***************************/
 
+#icones-modale-2{
+	display: flex;
+	justify-content: space-between; 
+}
+
+#icone-modale-précédente{
+	background: none;
+	border: none;
+	font-size: 1.5rem;
+	color: #333;
+	cursor: pointer;
+}
+
+#fermer-modale-2{
+	background: none;
+	border: none;
+	font-size: 1.5rem;
+	color: #333;
+	cursor: pointer;
+}
+
+#modale2-contenu{
+	margin-top: 40px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+
+#formulaire-ajout-travaux{
+	display: flex;
+	flex-direction: column;
+	margin-top: 25px;;
+	gap: 10px;
+	width:420px;
+	height:169px;
+}
+
+#contenaire-ajout-photo{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 7px;
+	background-color: #e8f1f6;
+	padding: 19px;
+	border-radius: 3px;
+	margin-bottom: 9px
+}
+
+#contenaire-ajout-photo .fa-regular{
+	color: #B9C5CC;
+}
+
+.ajouter-une-photo{
+	color: #306685;
+	background-color: #cbd6dc;
+	padding: 10px 33px;
+	border-radius: 50px;
+	cursor: pointer;
+}
+
+.type-taille-fichier {
+	size: 10px !important;
+}
+
+#voir-image {
+	max-height: 160px;
+}
+
+#modale-titre-ajout, #modale-2-categorie {
+	min-height: 51px;
+	height:300px;
+	border: none;
+	background: #fff;
+	box-shadow: 0px 4px 14px 0px rgba(0, 0, 0, 0.09);
+}
+
+.bordure{
+	margin-top: 30px;
+	border-bottom: 1px solid #B3B3B3;
+}
+
+.fa-image {
+  font-size: 76px;
+  color: #cbd6dc;
+  margin: 0;
+}
+
+#modale-validation-ajout-photo{
+  	background: #A7A7A7;
+	border:none;
+	width:237px;
+	min-height:36px;
+	cursor: pointer;
 }

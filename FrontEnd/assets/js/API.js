@@ -1,5 +1,5 @@
 // Fonction pour récupérer les catégories depuis l'API
-export async function boutonCategorie() {
+export async function categoriesApi() {
     try {
         // Fait une requête GET à l'API pour obtenir les catégories
         const reponse = await fetch("http://localhost:5678/api/categories")
@@ -70,3 +70,40 @@ export async function supprimerTravauxApi(id) {
     }
 }
 
+//Fonction pour ajouter des Travaux depuis l'API
+export async function ajouterProjetApi(e) {
+    e.preventDefault()
+    const formulaireAjoutTravaux = document.getElementById("formulaire-ajout-travaux")
+    // Vérifie si le formulaire existe
+    if (!formulaireAjoutTravaux) {
+        // Log une erreur si le formulaire n'est pas trouvé
+        console.error("Le formulaire d'ajout de travail n'a pas été trouvé.")
+        return
+    }
+    const formData = new FormData(formulaireAjoutTravaux) // Crée un objet FormData à partir du formulaire
+    try {
+        // Récupère le token et l'userId depuis le localStorage
+        const token = localStorage.getItem("token")
+        const userId = localStorage.getItem("userId")
+        // Envoie une requête POST à l'API avec les données du formulaire et les en-têtes d'autorisation
+        const response = await fetch("http://localhost:5678/api/works", {
+            method: "POST",
+            body: formData,
+            headers: {
+                Authorization: `Bearer ${token}`, // Authentification avec le token
+            },
+        })
+        // Vérifie si la réponse est OK
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`)// Lance une erreur si la réponse n'est pas OK
+        }
+        // Traite la réponse si nécessaire
+        const result = await response.json()
+        console.log("Projet ajouté avec succès:", result)
+    } catch (err) {
+        // Log l'erreur dans la console
+        console.error("Erreur pour l'ajout du travail :", err)
+        // Relance l'erreur pour gestion côté appelant
+        throw err
+    }
+}

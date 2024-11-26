@@ -50,40 +50,40 @@
 			<!-- Modale gérée par JavaScript -->
 			<section id="modale" class="modale" aria-hidden="true" role="dialog" style="display: none;" >
 				<div class="modale-conteneur js-modale-stop">
-					<div id="modale1" >
+					<div id="modale1">
 						<button id="fermer-modale-1" class="fermer-modale"><i class="fa-solid fa-xmark"></i></button>
 						<h3 id="modale-titre">Galerie photo</h3>
 						<div class="modale-gallerie" id="modaleGallerie">
-							<!--Géré par JavaScript-->
+							<!-- Géré par JavaScript -->
 						</div>
-						<div class="bordure"></div>
 						<input type="submit" id="ajout-photo-modale" value="Ajouter une photo">
 					</div>
 				
-					<div id="modale2" >
-						<div class="icone">
-						<button class="modale-précédente"><i class="fa-solid fa-arrow-left" ></i></button>
-						<button class="fermer-modale"><i class="fa-solid fa-xmark"></i></button>
+					<div id="modale2">
+						<div id="icones-modale-2">
+							<button id="icone-modale-précédente" class="modale-précédente"><i class="fa-solid fa-arrow-left"></i></button>
+							<button id="fermer-modale-2" class="fermer-modale"><i class="fa-solid fa-xmark"></i></button>
 						</div>
-						<h3 id="modale-titre">Ajout photo</h3>
-						<!-- Formulaire d'ajout travail -->
-						<form id="formulaire-ajout-travaux">
-							<div class="contenaire-ajout-photo">
-								<i class="fa-regular fa-image"></i>
-								<label for="file" class="labelFile">+ Ajouter une photo <br>
-									jpg, png : 4 Mo max</label>
-
-								<input type="file" name="image" id="file" accept="image/jpg, image/png" required style="display: none;">
-								<img id="previewImage" src="#" alt="Aperçu de l'image" style="display: none;">
-							</div>
-							<label for="title">Titre</label>
-							<input type="text" name="title" id="modale-titre-ajout" required>
-							<label for="categoryInput">Catégorie</label>
-							<select id="modale-categorie-ajout" name="category" required></select>
-							<div class="bordure"></div>
-							<input type="submit" id="modale-validation-ajout-photo" value="Valider">
-						</form>
-					
+						<div id="modale2-contenu">
+							<h3 id="modale-titre">Ajout photo</h3>
+							<!-- Formulaire d'ajout travail -->
+							<form id="formulaire-ajout-travaux">
+								<div id="contenaire-ajout-photo">
+									<i class="fa-regular fa-image" id="image-icone-modale2"></i>
+									<label for="fichier-image" class="ajouter-une-photo">+ Ajouter une photo </label>
+									<p class="type-taille-fichier">jpg, png : 4 Mo max</p>
+									<input type="file" name="image" id="fichier-image" accept="image/jpg, image/png" required style="display: none;">
+									<img id="voir-image" src="#" alt="Aperçu de l'image" style="display: none;">
+								</div>
+								<label for="title">Titre</label>
+								<input type="text" name="title" id="modale-titre-ajout" required>
+								<label for="categoryInput">Catégorie</label>
+								<select id="modale-2-categorie" name="category" required></select>
+								<div class="bordure"></div>
+								<input type="submit" id="modale-validation-ajout-photo" value="Valider">
+							</form>
+						</div>
+					</div>
 				</div>
 				
 			</section>
