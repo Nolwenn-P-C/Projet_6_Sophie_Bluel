@@ -471,10 +471,11 @@ body.banner-active .header {
 	background-color: #cbd6dc;
 	padding: 10px 33px;
 	border-radius: 50px;
+	cursor: pointer;
 }
 
 .type-taille-fichier {
-	size: 10px !important;;
+	size: 10px !important;
 }
 
 #voir-image {
@@ -505,8 +506,5 @@ body.banner-active .header {
 	border:none;
 	width:237px;
 	min-height:36px;
-}
-
-#modale-validation-ajout-photo:hover{
-	background-color: #1d6154;
+	cursor: pointer;
 }

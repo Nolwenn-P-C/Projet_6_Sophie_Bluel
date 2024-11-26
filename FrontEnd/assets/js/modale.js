@@ -2,7 +2,7 @@
 //************************************************* Récupération des API **************************************************/
 //*************************************************************************************************************************/
 
-import { categoriesApi, getWorks, supprimerTravauxApi } from './API.js'
+import { categoriesApi, getWorks, supprimerTravauxApi, ajouterProjetApi } from './API.js'
 import { mesProjets } from './index.js'
 
 //*************************************************************************************************************************/
@@ -66,7 +66,7 @@ document.querySelectorAll('.js-modale').forEach(a => {
     a.addEventListener('click', ouvertureModale) // Ajoute un gestionnaire d'événements pour ouvrir la modale sur tous les liens ayant la classe js-modale
 })
 
-window.addEventListener('keydown', function (e) {
+window.addEventListener('keydown', (e) => {
     if (e.key === "Escape" || e.key === "Esc") { // Si la touche Échap est pressée
         fermetureModale(e) // Ferme la modale
     }
@@ -155,26 +155,95 @@ function modalePrécédente() {
 modalePrécédente()
 
 //*************************************************************************************************************************/
-//************************************************* Ajout photo travaux ***************************************************/
+//************************************************ Ajout projet Modale 2 **************************************************/
 //*************************************************************************************************************************/
 
-async function catégoriesModale() {
+
+// Initialisation des éléments
+const fichierImage = document.getElementById("fichier-image")
+const voirImage = document.getElementById("voir-image")
+const ajouterPhotoTexte = document.querySelector(".ajouter-une-photo")
+const typeTailleFichierInfo = document.querySelector(".type-taille-fichier")
+const imageIconeModale2 = document.getElementById("image-icone-modale2")
+const titreProjetModale = document.getElementById('modale-titre-ajout')
+const categorieProjetModale = document.getElementById('modale-2-categorie')
+const validationModale2 = document.getElementById('modale-validation-ajout-photo')
+
+// Fonction pour gérer l'aperçu de l'image
+function gererApercuImage() {
+    // Ajoute un écouteur d'événement pour détecter les changements dans le fichier image
+    fichierImage.addEventListener("change", (event) => {
+        console.log("Événement change détecté")
+        const file = event.target.files[0] // Récupère le fichier sélectionné
+        if (file) {
+            const lecturePhoto = new FileReader() // Crée une instance de FileReader pour lire le fichier
+            // Définit la fonction à exécuter lorsque le fichier est lu avec succès
+            lecturePhoto.onload = (e) => {
+                console.log("Fichier lu avec succès")
+                // Affiche l'image d'aperçu
+                voirImage.src = e.target.result
+                voirImage.style.display = "block"
+                // Masque les éléments de sélection de l'image
+                ajouterPhotoTexte.style.display = "none"
+                typeTailleFichierInfo.style.display = "none"
+                imageIconeModale2.style.display = "none"
+
+                // Vérifie l'état des champs après le changement de l'image
+                activationBoutonValidationModale2()
+            }
+            // Lit le fichier en tant qu'URL de données
+            lecturePhoto.readAsDataURL(file)
+        }
+    })
+}
+
+// Fonction pour gérer les catégories
+async function gererCategories() {
+    // Récupère l'élément de sélection des catégories
     const selectionCategorie = document.getElementById("modale-2-categorie")
     if (!selectionCategorie) {
         console.error("Erreur lors de la récupération des catégories")
         return
     }
-    // Ajouter une option vide par défaut
+    // Ajoute une option vide par défaut
     selectionCategorie.insertAdjacentHTML("beforeend", '<option value="">Sélectionnez une catégorie</option>')
     try {
         const categories = await categoriesApi() // Récupère les catégories depuis l'API
+        // Ajoute chaque catégorie en tant qu'option dans le select
         categories.forEach((categorie) => {
             const optionApi = `<option value="${categorie.id}">${categorie.name}</option>`
-            selectionCategorie.insertAdjacentHTML("beforeend", optionApi) // Ajoute chaque option au select
+            selectionCategorie.insertAdjacentHTML("beforeend", optionApi)
         })
     } catch (error) {
         console.error("Erreur lors du chargement des catégories:", error)
     }
 }
 
-catégoriesModale()
+// Fonction pour vérifier si les champs sont remplis
+function champsComplets() {
+    const nouvelleImageProjetModale = voirImage.src !== "" && voirImage.src !== "#" // Vérifie si l'image du projet n'est pas vide, ni une valeur par défaut 
+    const NouveauTitreProjetModale = titreProjetModale.value !== "" // Vérifie si le titre du projet est défini
+    const nouvelleCategorieProjetModale = categorieProjetModale.value !== "" // Vérifie si la catégorie du projet est définie
+    // Retourne vrai si tous les champs sont remplis
+    return nouvelleImageProjetModale && NouveauTitreProjetModale && nouvelleCategorieProjetModale
+}
+
+// Fonction pour activer ou désactiver le bouton de validation
+function activationBoutonValidationModale2() {
+    validationModale2.disabled = !champsComplets() // Désactive le bouton si les champs ne sont pas tous remplis
+    validationModale2.style.backgroundColor = champsComplets() ? "#1D6154" : "#A7A7A7"// Change la couleur de fond du bouton en fonction de l'état des champs
+}
+
+// Ajoute un écouteur d'événement pour la saisie du titre
+titreProjetModale.addEventListener("input", activationBoutonValidationModale2)
+
+// Ajoute un écouteur d'événement pour la sélection de la catégorie
+categorieProjetModale.addEventListener("change", activationBoutonValidationModale2)
+
+// Appelle les fonctions initiales
+gererApercuImage()
+gererCategories()
+activationBoutonValidationModale2()
+
+// Ajoute un écouteur d'événement pour la soumission du formulaire
+document.getElementById("formulaire-ajout-travaux").addEventListener("submit", ajouterProjetApi)
