@@ -13,7 +13,7 @@ const lienModale = document.querySelector(".lien-modale")
 //************************************************* Récupération des API **************************************************/
 //*************************************************************************************************************************/
 
-import { getWorks, boutonCategorie } from './API.js'
+import { getWorks, categoriesApi } from './API.js'
 
 //*************************************************************************************************************************/
 //************************************************** Affichage des projets ************************************************/
@@ -48,7 +48,7 @@ mesProjets()
 //********************************************* Création des boutons filtres **********************************************/
 //*************************************************************************************************************************/
 
-async function displayCategorieBouton(){
+async function categoriesBoutons(){
     
     // Vérifier si les boutons de filtre existent déjà
     if (document.querySelectorAll(".boutonsFiltre").length > 0) {
@@ -64,7 +64,7 @@ async function displayCategorieBouton(){
     filtres.appendChild(btnAll); // Ajoute le bouton "TOUS" à l'élément des filtres
     
     // Création des autres boutons
-    const categories = await boutonCategorie(); // Récupère les catégories depuis l'API
+    const categories = await categoriesApi(); // Récupère les catégories depuis l'API
     categories.forEach((categorie) => {
         const btnHTML = `<button id="${categorie.id}" class="boutonsFiltre">${categorie.name}</button>`;
         filtres.insertAdjacentHTML("beforeend", btnHTML); // Ajoute chaque bouton de catégorie
@@ -125,7 +125,7 @@ async function main() {
         editionMode(); // Active le mode édition si nécessaire
         logOut()
     }
-    else displayCategorieBouton() // Ne sera exécutée que si le mode édition n'est pas activé
+    else categoriesBoutons() // Ne sera exécutée que si le mode édition n'est pas activé
 }
 main();
 

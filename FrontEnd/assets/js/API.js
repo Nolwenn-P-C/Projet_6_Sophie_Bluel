@@ -1,5 +1,5 @@
 // Fonction pour récupérer les catégories depuis l'API
-export async function boutonCategorie() {
+export async function categoriesApi() {
     try {
         // Fait une requête GET à l'API pour obtenir les catégories
         const reponse = await fetch("http://localhost:5678/api/categories")

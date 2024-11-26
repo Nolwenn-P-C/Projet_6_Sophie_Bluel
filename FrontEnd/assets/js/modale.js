@@ -2,7 +2,7 @@
 //************************************************* Récupération des API **************************************************/
 //*************************************************************************************************************************/
 
-import { getWorks, supprimerTravauxApi } from './API.js'
+import { categoriesApi, getWorks, supprimerTravauxApi } from './API.js'
 import { mesProjets } from './index.js'
 
 //*************************************************************************************************************************/
@@ -158,3 +158,23 @@ modalePrécédente()
 //************************************************* Ajout photo travaux ***************************************************/
 //*************************************************************************************************************************/
 
+async function catégoriesModale() {
+    const selectionCategorie = document.getElementById("modale-2-categorie")
+    if (!selectionCategorie) {
+        console.error("Erreur lors de la récupération des catégories")
+        return
+    }
+    // Ajouter une option vide par défaut
+    selectionCategorie.insertAdjacentHTML("beforeend", '<option value="">Sélectionnez une catégorie</option>')
+    try {
+        const categories = await categoriesApi() // Récupère les catégories depuis l'API
+        categories.forEach((categorie) => {
+            const optionApi = `<option value="${categorie.id}">${categorie.name}</option>`
+            selectionCategorie.insertAdjacentHTML("beforeend", optionApi) // Ajoute chaque option au select
+        })
+    } catch (error) {
+        console.error("Erreur lors du chargement des catégories:", error)
+    }
+}
+
+catégoriesModale()
