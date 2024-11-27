@@ -1,17 +1,32 @@
-//*************************************************************************************************************************/
-//************************************************* Récupération des API **************************************************/
-//*************************************************************************************************************************/
-
-import { categoriesApi, getWorks, supprimerTravauxApi, ajouterProjetApi } from './API.js'
-import { mesProjets } from './index.js'
-
-//*************************************************************************************************************************/
-//********************************************** Ouverture Fermeture Modale ***********************************************/
-//*************************************************************************************************************************/
+//*******************************************************************************************************************/
+//******************************************************* Init **********************************************************/
+//***********************************************************************************************************************/
 
 let modale = null // Variable pour stocker la modale actuellement ouverte
 const selectionFocusable = 'button, a, input, textarea' // Sélecteurs des éléments focusables
 let focusables = [] // Tableau qui contiendra tous les éléments focusables de la modale
+const gallerieModale = document.querySelector('.modale-gallerie')
+const modaleSupprimerTravaux = document.querySelector('#modale1')
+const modaleAjouterTravaux = document.querySelector('#modale2')
+const fichierImage = document.getElementById("fichier-image")
+const voirImage = document.getElementById("voir-image")
+const ajouterPhotoTexte = document.querySelector(".ajouter-une-photo")
+const typeTailleFichierInfo = document.querySelector(".type-taille-fichier")
+const imageIconeModale2 = document.getElementById("image-icone-modale2")
+const titreProjetModale = document.getElementById('modale-titre-ajout')
+const categorieProjetModale = document.getElementById('modale-2-categorie')
+const validationModale2 = document.getElementById('modale-validation-ajout-photo')
+
+//***********************************************************************************************************************/
+//************************************************* Récupération des API **************************************************/
+//***********************************************************************************************************************/
+
+import { categoriesApi, getWorks, supprimerTravauxApi, ajouterProjetApi } from './API.js'
+import { mesProjets } from './index.js'
+
+//***********************************************************************************************************************/
+//********************************************** Ouverture Fermeture Modale ***********************************************/
+//***********************************************************************************************************************/
 
 const ouvertureModale = function (e) {
     e.preventDefault()
@@ -48,7 +63,7 @@ const stopPropagation = function (e) {
 const focusModale = function(e) {
     e.preventDefault()
     let index = focusables.findIndex(f => f === modale.querySelector(':focus')) // Trouve l'index de l'élément actuellement focusé dans la liste des éléments focusables
-    if (e.shift === true) { // Si la touche Shift est enfoncée (navigation inverse)
+    if (e.shiftKey) { // Si la touche Shift est enfoncée (navigation inverse)
         index-- // Décrémente l'index pour aller à l'élément précédent
     } else {
         index++ // Incrémente l'index pour aller à l'élément suivant
@@ -75,20 +90,15 @@ window.addEventListener('keydown', (e) => {
     }
 })
 
-
-//*************************************************************************************************************************/
-//************************************************ Supprimer des projets **************************************************/
-//*************************************************************************************************************************/
-
-const gallerieModale = document.querySelector('.modale-gallerie')
-const modaleSupprimerTravaux = document.querySelector('#modale1')
-const modaleAjouterTravaux = document.querySelector('#modale2')
+//***********************************************************************************************************************/
+//********************************************** Supprimer des projets **************************************************/
+//***********************************************************************************************************************/
 
 async function afficherTravauxDansModale() {
     try {
         modaleAjouterTravaux.style.display = "none"
         let works = await getWorks() // Récupère les travaux depuis l'API
-        let afficher = '' //Initialise une chaîne vide pour construire le HTML
+        let afficher = '' // Initialise une chaîne vide pour construire le HTML
         for (let figure of works) {
             console.log(figure) // Affiche chaque travail dans la console pour vérification
             afficher += `
@@ -98,7 +108,7 @@ async function afficherTravauxDansModale() {
                 </figure>
             `
         }
-        //vide la galerie modale avant d'ajouter les nouveaux éléments
+        // Vide la galerie modale avant d'ajouter les nouveaux éléments
         while (gallerieModale.firstChild) {
             gallerieModale.removeChild(gallerieModale.firstChild)
         }
@@ -129,9 +139,9 @@ async function supprimerWorks(id) {
     }
 }
 
-//*************************************************************************************************************************/
-//************************************************* Changement de modale **************************************************/
-//*************************************************************************************************************************/
+//***********************************************************************************************************************/
+//********************************************** Changement de modale **************************************************/
+//***********************************************************************************************************************/
 
 function modaleSuivante() {
     const btnAjouterPhoto = document.querySelector('#ajout-photo-modale')
@@ -154,22 +164,10 @@ function modalePrécédente() {
 }
 modalePrécédente()
 
-//*************************************************************************************************************************/
-//************************************************ Ajout projet Modale 2 **************************************************/
-//*************************************************************************************************************************/
+//***********************************************************************************************************************/
+//********************************************** Ajout projet Modale 2 **************************************************/
+//***********************************************************************************************************************/
 
-
-// Initialisation des éléments
-const fichierImage = document.getElementById("fichier-image")
-const voirImage = document.getElementById("voir-image")
-const ajouterPhotoTexte = document.querySelector(".ajouter-une-photo")
-const typeTailleFichierInfo = document.querySelector(".type-taille-fichier")
-const imageIconeModale2 = document.getElementById("image-icone-modale2")
-const titreProjetModale = document.getElementById('modale-titre-ajout')
-const categorieProjetModale = document.getElementById('modale-2-categorie')
-const validationModale2 = document.getElementById('modale-validation-ajout-photo')
-
-// Fonction pour gérer l'aperçu de l'image
 function gererApercuImage() {
     // Ajoute un écouteur d'événement pour détecter les changements dans le fichier image
     fichierImage.addEventListener("change", (event) => {
@@ -187,7 +185,6 @@ function gererApercuImage() {
                 ajouterPhotoTexte.style.display = "none"
                 typeTailleFichierInfo.style.display = "none"
                 imageIconeModale2.style.display = "none"
-
                 // Vérifie l'état des champs après le changement de l'image
                 activationBoutonValidationModale2()
             }
@@ -197,7 +194,6 @@ function gererApercuImage() {
     })
 }
 
-// Fonction pour gérer les catégories
 async function gererCategories() {
     // Récupère l'élément de sélection des catégories
     const selectionCategorie = document.getElementById("modale-2-categorie")
@@ -219,9 +215,8 @@ async function gererCategories() {
     }
 }
 
-// Fonction pour vérifier si les champs sont remplis
 function champsComplets() {
-    const nouvelleImageProjetModale = voirImage.src !== "" && voirImage.src !== "#" // Vérifie si l'image du projet n'est pas vide, ni une valeur par défaut 
+    const nouvelleImageProjetModale = voirImage.src !== "" && voirImage.src !== "#" // Vérifie si l'image du projet n'est pas vide, ni une valeur par défaut
     const NouveauTitreProjetModale = titreProjetModale.value !== "" // Vérifie si le titre du projet est défini
     const nouvelleCategorieProjetModale = categorieProjetModale.value !== "" // Vérifie si la catégorie du projet est définie
     // Retourne vrai si tous les champs sont remplis
@@ -230,8 +225,8 @@ function champsComplets() {
 
 // Fonction pour activer ou désactiver le bouton de validation
 function activationBoutonValidationModale2() {
-    validationModale2.disabled = !champsComplets() // Désactive le bouton si les champs ne sont pas tous remplis
-    validationModale2.style.backgroundColor = champsComplets() ? "#1D6154" : "#A7A7A7"// Change la couleur de fond du bouton en fonction de l'état des champs
+    // validationModale2.disabled = !champsComplets() // Désactive le bouton si les champs ne sont pas tous remplis
+    validationModale2.style.backgroundColor = champsComplets() ? "#1D6154" : "#A7A7A7" // Change la couleur de fond du bouton en fonction de l'état des champs
 }
 
 // Ajoute un écouteur d'événement pour la saisie du titre
@@ -245,5 +240,19 @@ gererApercuImage()
 gererCategories()
 activationBoutonValidationModale2()
 
-// Ajoute un écouteur d'événement pour la soumission du formulaire
-document.getElementById("formulaire-ajout-travaux").addEventListener("submit", ajouterProjetApi)
+document.getElementById("formulaire-ajout-travaux").addEventListener("submit", async function (e) {
+    e.preventDefault() // Empêche le comportement par défaut du formulaire
+    if (!champsComplets()) {
+        console.error("Tous les champs ne sont pas remplis.")
+        return; // Arrête l'exécution si les champs ne sont pas remplis
+    }
+    try {
+        await ajouterProjetApi(e) // Appelle l'API pour ajouter le projet
+        modaleAjouterTravaux.style.display = "none" // Ferme la modale actuelle
+        modaleSupprimerTravaux.style.removeProperty("display") // Affiche la modale précédente
+        await afficherTravauxDansModale() // Recharge les projets dans la galerie
+        await mesProjets() // Met à jour la galerie principale
+    } catch (err) {
+        console.error("Erreur lors de l'ajout :", err)
+    }
+})
