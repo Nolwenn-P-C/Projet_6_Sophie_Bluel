@@ -130,7 +130,9 @@ async function main() {
         categoriesBoutons() // Ne sera exécutée que si le mode édition n'est pas activé
     }
 }
-main()
+
+// Appeler la fonction main lorsque le DOM est complètement chargé
+document.addEventListener("DOMContentLoaded", main)
 
 // Afficher le mode édition
 function editionMode() {
@@ -161,5 +163,11 @@ function logOut() {
         window.location.href = "index.html"
         // Si l'utilisateur n'est pas connecté, assure que le bouton est bien en "login"
         logInOutBtn.textContent = "login"
+    })
+    // Ajouter un écouteur d'événements pour beforeunload
+    window.addEventListener('beforeunload', (event) => {
+        // Supprime les données de session (userId et token) pour déconnecter l'utilisateur
+        localStorage.removeItem("token")
+        localStorage.removeItem("userId")
     })
 }

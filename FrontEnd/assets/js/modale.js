@@ -251,6 +251,7 @@ document.getElementById("formulaire-ajout-travaux").addEventListener("submit", a
         modaleAjouterTravaux.style.display = "none" // Ferme la modale actuelle
         modaleSupprimerTravaux.style.removeProperty("display") // Affiche la modale précédente
         await afficherTravauxDansModale() // Recharge les projets dans la galerie
+        await mesProjets() // Met à jour la galerie principale
     } catch (err) {
         console.error("Erreur lors de l'ajout :", err)
     }
