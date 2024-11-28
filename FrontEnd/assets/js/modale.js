@@ -1,10 +1,8 @@
-//*******************************************************************************************************************/
+//***********************************************************************************************************************/
 //******************************************************* Init **********************************************************/
 //***********************************************************************************************************************/
 
-let modale = null // Variable pour stocker la modale actuellement ouverte
-const selectionFocusable = 'button, a, input, textarea' // Sélecteurs des éléments focusables
-let focusables = [] // Tableau qui contiendra tous les éléments focusables de la modale
+let modale = null
 const gallerieModale = document.querySelector('.modale-gallerie')
 const modaleSupprimerTravaux = document.querySelector('#modale1')
 const modaleAjouterTravaux = document.querySelector('#modale2')
@@ -17,76 +15,66 @@ const titreProjetModale = document.getElementById('modale-titre-ajout')
 const categorieProjetModale = document.getElementById('modale-2-categorie')
 const validationModale2 = document.getElementById('modale-validation-ajout-photo')
 
-//***********************************************************************************************************************/
+//*************************************************************************************************************************/
 //************************************************* Récupération des API **************************************************/
-//***********************************************************************************************************************/
+//*************************************************************************************************************************/
 
 import { categoriesApi, getWorks, supprimerTravauxApi, ajouterProjetApi } from './API.js'
 import { mesProjets } from './index.js'
 
-//***********************************************************************************************************************/
+//*************************************************************************************************************************/
 //********************************************** Ouverture Fermeture Modale ***********************************************/
-//***********************************************************************************************************************/
+//*************************************************************************************************************************/
 
-const ouvertureModale = function (e) {
+/**
+ * Ouvre la modale.
+ * @param {Event} e - L'événement de clic.
+ */
+const ouvertureModale = (e) => {
     e.preventDefault()
-    modale = document.querySelector(e.target.getAttribute('href')) // Sélectionne la modale cible via l'attribut href du lien cliqué
-    if (!modale) return // Si la modale n'existe pas, ne fait rien
-    focusables = Array.from(modale.querySelectorAll(selectionFocusable)) // Récupère tous les éléments focusables de la modale
-    focusables[0].focus() // Place le focus sur le premier élément focusable de la modale
-    modale.style.display = null // Affiche la modale
-    modale.removeAttribute("aria-hidden") // Indique que la modale n'est plus cachée
-    modale.setAttribute("aria-modal", "true") // Indique que la modale est active et qu’elle bloque l’arrière-plan
+    modale = document.querySelector('#modale')
+    if (!modale) return
 
-    // Ajoute les gestionnaires d'événements pour fermer la modale ou empêcher sa fermeture
-    modale.addEventListener('click', fermetureModale) // Ferme la modale lorsqu'on clique en dehors de son contenu
-    modale.querySelectorAll('.fermer-modale').forEach(btn => btn.addEventListener('click', fermetureModale)) // Ferme la modale en cliquant sur le bouton de fermeture
-    modale.querySelectorAll('.js-modale-stop').forEach(btn => btn.addEventListener('click', stopPropagation)) // Empêche la fermeture de la modale lorsqu'on clique sur son contenu
+    modale.style.display = null
+    modale.removeAttribute("aria-hidden")
+    modale.setAttribute("aria-modal", "true")
+
+    modale.addEventListener('click', fermetureModale)
+    modale.querySelectorAll('.fermer-modale').forEach(btn => btn.addEventListener('click', fermetureModale))
+    modale.querySelectorAll('.js-modale-stop').forEach(btn => btn.addEventListener('click', stopPropagation))
 }
 
-const fermetureModale = function (e) {
-    if (modale === null) return // Si aucune modale n'est ouverte, ne fait rien
+/**
+ * Ferme la modale.
+ * @param {Event} e - L'événement de clic.
+ */
+const fermetureModale = (e) => {
+    if (modale === null) return
     e.preventDefault()
-    modale.style.display = "none" // Cache la modale
-    modale.setAttribute("aria-hidden", "true") // Indique que la modale est à nouveau cachée
-    modale.removeAttribute("aria-modal") // Retire l'indication que la modale est active
-    modale.removeEventListener('click', fermetureModale) // Supprime l'écouteur pour fermer la modale en cliquant à l'extérieur
-    modale.querySelectorAll('.fermer-modale').forEach(btn => btn.removeEventListener('click', fermetureModale)) // Supprime l'écouteur du bouton de fermeture
-    modale.querySelectorAll('.js-modale-stop').forEach(btn => btn.removeEventListener('click', stopPropagation)) // Supprime l'écouteur pour empêcher la fermeture en cliquant dans la modale
-    modale = null // Réinitialise la variable modale à null
+    modale.style.display = "none"
+    modale.setAttribute("aria-hidden", "true")
+    modale.removeAttribute("aria-modal")
+    modale.removeEventListener('click', fermetureModale)
+    modale.querySelectorAll('.fermer-modale').forEach(btn => btn.removeEventListener('click', fermetureModale))
+    modale.querySelectorAll('.js-modale-stop').forEach(btn => btn.removeEventListener('click', stopPropagation))
+    modale = null
 }
 
-const stopPropagation = function (e) {
-    e.stopPropagation() // Empêche l'événement click de se propager à d'autres éléments
-}
-
-const focusModale = function(e) {
-    e.preventDefault()
-    let index = focusables.findIndex(f => f === modale.querySelector(':focus')) // Trouve l'index de l'élément actuellement focusé dans la liste des éléments focusables
-    if (e.shiftKey) { // Si la touche Shift est enfoncée (navigation inverse)
-        index-- // Décrémente l'index pour aller à l'élément précédent
-    } else {
-        index++ // Incrémente l'index pour aller à l'élément suivant
-    }
-    if (index >= focusables.length) { // Si l'index dépasse le dernier élément
-        index = 0 // Recommence au premier élément
-    }
-    if (index < 0) { // Si l'index est inférieur à zéro
-        index = focusables.length - 1 // Revient au dernier élément
-    }
-    focusables[index].focus() // Place le focus sur l'élément calculé
+/**
+ * Empêche la propagation de l'événement.
+ * @param {Event} e - L'événement de clic.
+ */
+const stopPropagation = (e) => {
+    e.stopPropagation()
 }
 
 document.querySelectorAll('.js-modale').forEach(a => {
-    a.addEventListener('click', ouvertureModale) // Ajoute un gestionnaire d'événements pour ouvrir la modale sur tous les liens ayant la classe js-modale
+    a.addEventListener('click', ouvertureModale)
 })
 
 window.addEventListener('keydown', (e) => {
-    if (e.key === "Escape" || e.key === "Esc") { // Si la touche Échap est pressée
-        fermetureModale(e) // Ferme la modale
-    }
-    if (e.key === "Tab" && modale !== null) { // Si la touche Tab est pressée et qu'une modale est ouverte
-        focusModale(e) // Gère la navigation au clavier dans la modale
+    if (e.key === "Escape" || e.key === "Esc") {
+        fermetureModale(e)
     }
 })
 
@@ -94,13 +82,17 @@ window.addEventListener('keydown', (e) => {
 //********************************************** Supprimer des projets **************************************************/
 //***********************************************************************************************************************/
 
-async function afficherTravauxDansModale() {
+/**
+ * Affiche les travaux dans la modale.
+ * @async
+ * @returns {Promise<void>}
+ */
+const afficherTravauxDansModale = async () => {
     try {
         modaleAjouterTravaux.style.display = "none"
-        let works = await getWorks() // Récupère les travaux depuis l'API
-        let afficher = '' // Initialise une chaîne vide pour construire le HTML
+        let works = await getWorks()
+        let afficher = ''
         for (let figure of works) {
-            console.log(figure) // Affiche chaque travail dans la console pour vérification
             afficher += `
                 <figure data-id="${figure.id}">
                     <img src="${figure.imageUrl}" alt="${figure.title}">
@@ -108,44 +100,50 @@ async function afficherTravauxDansModale() {
                 </figure>
             `
         }
-        // Vide la galerie modale avant d'ajouter les nouveaux éléments
         while (gallerieModale.firstChild) {
             gallerieModale.removeChild(gallerieModale.firstChild)
         }
-        gallerieModale.insertAdjacentHTML("beforeend", afficher) // Insertion des éléments dans la galerie
+        gallerieModale.insertAdjacentHTML("beforeend", afficher)
 
-        // Ajouter les écouteurs d'événements pour les icônes corbeille
         document.querySelectorAll('.fa-trash-can').forEach(icon => {
-            icon.addEventListener("click", function (e) {
+            icon.addEventListener("click", (e) => {
                 e.preventDefault()
                 const workId = e.target.closest('figure').dataset.id
-                supprimerWorks(workId) // Appelle la fonction pour supprimer le travail
+                supprimerWorks(workId)
             })
         })
     } catch (err) {
-        console.log(err) // Affiche l'erreur en cas de problème
+        console.error("Erreur lors de l'affichage de la galerie dans la modale :", error)
     }
 }
 afficherTravauxDansModale()
 
-async function supprimerWorks(id) {
+/**
+ * Supprime un travail.
+ * @async
+ * @param {number} id - L'identifiant du travail à supprimer.
+ * @returns {Promise<void>}
+ */
+const supprimerWorks = async (id) => {
     try {
-        await supprimerTravauxApi(id) // Appelle la fonction API pour supprimer le travail
-        console.log("Travail supprimé avec succès !") // Affiche un message de succès dans la console
-        await afficherTravauxDansModale() // Met à jour la galerie dans la modale
-        await mesProjets() // Met à jour la galerie principale
+        await supprimerTravauxApi(id)
+        await afficherTravauxDansModale()
+        await mesProjets()
     } catch (error) {
         console.error("Erreur lors de la suppression :", error)
     }
 }
 
 //***********************************************************************************************************************/
-//********************************************** Changement de modale **************************************************/
+//********************************************** Changement de modale ***************************************************/
 //***********************************************************************************************************************/
 
-function modaleSuivante() {
+/**
+ * Passe à la modale suivante lorsque l'utilisateur clique sur le bouton "ajouter".
+ */
+const modaleSuivante = () => {
     const btnAjouterPhoto = document.querySelector('#ajout-photo-modale')
-    btnAjouterPhoto.addEventListener("click", function (e) {
+    btnAjouterPhoto.addEventListener("click", (e) => {
         e.preventDefault()
         modaleSupprimerTravaux.style.display = "none"
         modaleAjouterTravaux.style.removeProperty("display")
@@ -153,9 +151,12 @@ function modaleSuivante() {
 }
 modaleSuivante()
 
-function modalePrécédente() {
+/**
+ * Revient à la modale précédente.
+ */
+const modalePrécédente = () => {
     const btnModalePrécédente = document.querySelector('.modale-précédente')
-    btnModalePrécédente.addEventListener("click", function (e) {
+    btnModalePrécédente.addEventListener("click", (e) => {
         e.preventDefault()
         modaleAjouterTravaux.style.display = "none"
         modaleSupprimerTravaux.style.removeProperty("display")
@@ -168,44 +169,47 @@ modalePrécédente()
 //********************************************** Ajout projet Modale 2 **************************************************/
 //***********************************************************************************************************************/
 
-function gererApercuImage() {
-    // Ajoute un écouteur d'événement pour détecter les changements dans le fichier image
+/**
+ * Gère l'aperçu de l'image sélectionnée.
+ */
+const gererApercuImage = () => {
     fichierImage.addEventListener("change", (event) => {
-        console.log("Événement change détecté")
-        const file = event.target.files[0] // Récupère le fichier sélectionné
+        const file = event.target.files[0]
         if (file) {
-            const lecturePhoto = new FileReader() // Crée une instance de FileReader pour lire le fichier
+            const lecturePhoto = new FileReader()
             // Définit la fonction à exécuter lorsque le fichier est lu avec succès
             lecturePhoto.onload = (e) => {
-                console.log("Fichier lu avec succès")
-                // Affiche l'image d'aperçu
                 voirImage.src = e.target.result
                 voirImage.style.display = "block"
-                // Masque les éléments de sélection de l'image
+
                 ajouterPhotoTexte.style.display = "none"
                 typeTailleFichierInfo.style.display = "none"
                 imageIconeModale2.style.display = "none"
-                // Vérifie l'état des champs après le changement de l'image
+
                 activationBoutonValidationModale2()
             }
-            // Lit le fichier en tant qu'URL de données
+
             lecturePhoto.readAsDataURL(file)
         }
     })
 }
 
-async function gererCategories() {
-    // Récupère l'élément de sélection des catégories
+/**
+ * Gère les catégories pour le formulaire d'ajout de projet.
+ * @async
+ * @returns {Promise<void>}
+ */
+const gererCategories = async () => {
     const selectionCategorie = document.getElementById("modale-2-categorie")
     if (!selectionCategorie) {
         console.error("Erreur lors de la récupération des catégories")
         return
     }
-    // Ajoute une option vide par défaut
+
     selectionCategorie.insertAdjacentHTML("beforeend", '<option value="">Sélectionnez une catégorie</option>')
     try {
-        const categories = await categoriesApi() // Récupère les catégories depuis l'API
-        // Ajoute chaque catégorie en tant qu'option dans le select
+        const categories = await categoriesApi()
+
         categories.forEach((categorie) => {
             const optionApi = `<option value="${categorie.id}">${categorie.name}</option>`
             selectionCategorie.insertAdjacentHTML("beforeend", optionApi)
@@ -215,43 +219,56 @@ async function gererCategories() {
     }
 }
 
-function champsComplets() {
-    const nouvelleImageProjetModale = voirImage.src !== "" && voirImage.src !== "#" // Vérifie si l'image du projet n'est pas vide, ni une valeur par défaut
-    const NouveauTitreProjetModale = titreProjetModale.value !== "" // Vérifie si le titre du projet est défini
-    const nouvelleCategorieProjetModale = categorieProjetModale.value !== "" // Vérifie si la catégorie du projet est définie
-    // Retourne vrai si tous les champs sont remplis
+/**
+ * Vérifie si tous les champs du formulaire sont remplis.
+ * @returns {boolean}
+ */
+const champsComplets = () => {
+    const nouvelleImageProjetModale = voirImage.src !== "" && voirImage.src !== "#"
+    const NouveauTitreProjetModale = titreProjetModale.value !== ""
+    const nouvelleCategorieProjetModale = categorieProjetModale.value !== ""
+
     return nouvelleImageProjetModale && NouveauTitreProjetModale && nouvelleCategorieProjetModale
 }
 
-// Fonction pour activer ou désactiver le bouton de validation
-function activationBoutonValidationModale2() {
-    // validationModale2.disabled = !champsComplets() // Désactive le bouton si les champs ne sont pas tous remplis
-    validationModale2.style.backgroundColor = champsComplets() ? "#1D6154" : "#A7A7A7" // Change la couleur de fond du bouton en fonction de l'état des champs
+/**
+ * Active ou désactive le bouton de validation en fonction de l'état des champs du formulaire.
+ */
+const activationBoutonValidationModale2 = () => {
+    validationModale2.style.backgroundColor = champsComplets() ? "#1D6154" : "#A7A7A7"
 }
 
-// Ajoute un écouteur d'événement pour la saisie du titre
 titreProjetModale.addEventListener("input", activationBoutonValidationModale2)
 
-// Ajoute un écouteur d'événement pour la sélection de la catégorie
 categorieProjetModale.addEventListener("change", activationBoutonValidationModale2)
 
-// Appelle les fonctions initiales
 gererApercuImage()
 gererCategories()
 activationBoutonValidationModale2()
 
-document.getElementById("formulaire-ajout-travaux").addEventListener("submit", async function (e) {
-    e.preventDefault() // Empêche le comportement par défaut du formulaire
+
+/**
+ * Une fois le projet ajouter, la module se réinitialise.
+ */
+document.getElementById("formulaire-ajout-travaux").addEventListener("submit", async (e) => {
+    e.preventDefault()
+
     if (!champsComplets()) {
         console.error("Tous les champs ne sont pas remplis.")
-        return; // Arrête l'exécution si les champs ne sont pas remplis
+        return
     }
     try {
-        await ajouterProjetApi(e) // Appelle l'API pour ajouter le projet
-        modaleAjouterTravaux.style.display = "none" // Ferme la modale actuelle
-        modaleSupprimerTravaux.style.removeProperty("display") // Affiche la modale précédente
-        await afficherTravauxDansModale() // Recharge les projets dans la galerie
-        await mesProjets() // Met à jour la galerie principale
+        await ajouterProjetApi(e)
+
+        e.target.reset()
+
+        voirImage.src = ""
+        voirImage.style.display = "none"
+        ajouterPhotoTexte.style.display = "block"
+        typeTailleFichierInfo.style.display = "block"
+        imageIconeModale2.style.display = "block"
+
+        await mesProjets()
     } catch (err) {
         console.error("Erreur lors de l'ajout :", err)
     }
