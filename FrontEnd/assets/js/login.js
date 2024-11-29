@@ -37,8 +37,8 @@ const connexion = () => {
             } else {
                 const connexion = await identification.json()
 
-                localStorage.setItem("userId", connexion.userId)
-                localStorage.setItem("token", connexion.token)
+                sessionStorage.setItem("userId", connexion.userId)
+                sessionStorage.setItem("token", connexion.token)
 
                 location.href = "../../index.html"
             }

@@ -92,6 +92,7 @@ const afficherTravauxDansModale = async () => {
         modaleAjouterTravaux.style.display = "none"
         let works = await getWorks()
         let afficher = ''
+
         for (let figure of works) {
             afficher += `
                 <figure data-id="${figure.id}">
@@ -100,9 +101,11 @@ const afficherTravauxDansModale = async () => {
                 </figure>
             `
         }
-        while (gallerieModale.firstChild) {
-            gallerieModale.removeChild(gallerieModale.firstChild)
+
+        for (let i = gallerieModale.children.length - 1; i >= 0; i--) {
+            gallerieModale.removeChild(gallerieModale.children[i])
         }
+
         gallerieModale.insertAdjacentHTML("beforeend", afficher)
 
         document.querySelectorAll('.fa-trash-can').forEach(icon => {
@@ -113,10 +116,12 @@ const afficherTravauxDansModale = async () => {
             })
         })
     } catch (err) {
-        console.error("Erreur lors de l'affichage de la galerie dans la modale :", error)
+        console.error("Erreur lors de l'affichage de la galerie dans la modale :", err)
     }
 }
 afficherTravauxDansModale()
+
+
 
 /**
  * Supprime un travail.

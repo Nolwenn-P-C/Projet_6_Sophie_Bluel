@@ -259,10 +259,11 @@ nav a.active {
 	padding-top: 25px;
 }
 
-#login-page footer {
+footer {
 	margin:0;
 	padding:0;
-    width: 100%; 
+	width: 100vw; 
+    margin-left: calc(44% - 50vw); /* Centrer l'élément */
 }
 
 .message-erreur{
@@ -288,7 +289,7 @@ body.banner-active .header {
 	justify-content: center;
 	gap: 20px;
     width: 100vw; 
-    margin-left: calc(50% - 50vw); /* Centrer l'élément */
+    margin-left: calc(49% - 50vw); 
 }
 
 /************************ Modale 1 ***************************/
@@ -312,7 +313,6 @@ body.banner-active .header {
 	text-decoration: none;
 	color: black;
 	font-weight: 400;
-	
 }
 
 #modale {
@@ -340,16 +340,19 @@ body.banner-active .header {
 	border-radius: 10px;
 }
 
-#modale1 .fermer-modale {
+#modale1 #fermer-modale-1 {
 	width: 100%;
 	display: flex;
 	justify-content:end;	
-	cursor: pointer;
 	font-size:20px;
 	background: none;
 	border: none;
 	font-size: 1.5rem;
 	color: #333;
+}
+
+.fermer-modale{
+	cursor: pointer;
 }
 
 #modale-titre{
@@ -432,7 +435,6 @@ body.banner-active .header {
 	border: none;
 	font-size: 1.5rem;
 	color: #333;
-	cursor: pointer;
 }
 
 #modale2-contenu{
