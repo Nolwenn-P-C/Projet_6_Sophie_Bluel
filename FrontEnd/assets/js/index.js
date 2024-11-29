@@ -4,7 +4,7 @@
 
 const filtres = document.querySelector(".filtres")
 const logInOutBtn = document.querySelector(".logInOut")
-const token = localStorage.getItem("token")
+const token = sessionStorage.getItem("token")
 const lienModale = document.querySelector(".lien-modale")
 
 //*************************************************************************************************************************/
@@ -35,16 +35,21 @@ export const mesProjets = async () => {
                 </figure>
             `
         }
+
         const gallery = document.querySelector('.gallery')
-        while (gallery.firstChild) {
-            gallery.removeChild(gallery.firstChild)
+
+        for (let i = gallery.children.length - 1; i >= 0; i--) {
+            gallery.removeChild(gallery.children[i])
         }
+
         gallery.insertAdjacentHTML("beforeend", afficher)
     } catch (err) {
-        console.error("Erreur lors de l'affichage des projets :", error)
+        console.error("Erreur lors de l'affichage des projets :", err)
     }
 }
 mesProjets()
+
+
 
 //***********************************************************************************************************************/
 //******************************************* Création des boutons filtres **********************************************/
@@ -56,7 +61,7 @@ mesProjets()
  * @returns {Promise<void>}
  */
 const categoriesBoutons = async () => {
-    // Vérifier si les boutons de filtre existent déjà
+    
     if (document.querySelectorAll(".boutonsFiltre").length > 0) {
         return
     }
@@ -94,9 +99,11 @@ const filtreCategorie = async () => {
             } else {
                 filtreWorks = works.filter(work => work.categoryId === btnID)
             }
-            while (gallery.firstChild) {
-                gallery.removeChild(gallery.firstChild)
+
+            for (let i = gallery.children.length - 1; i >= 0; i--) {
+                gallery.removeChild(gallery.children[i])
             }
+
             let displayFiltre = ''
             for (let figure of filtreWorks) {
                 displayFiltre += `
@@ -110,6 +117,7 @@ const filtreCategorie = async () => {
         })
     })
 }
+
 
 //*************************************************************************************************************************/
 //************************************************** Bouton Logout/LogIn **************************************************/
@@ -156,8 +164,8 @@ const logOut = () => {
     logInOutBtn.addEventListener("click", (event) => {
         event.preventDefault()
 
-        localStorage.removeItem("token")
-        localStorage.removeItem("userId")
+        sessionStorage.removeItem("token")
+        sessionStorage.removeItem("userId")
 
         window.location.href = "index.html"
 

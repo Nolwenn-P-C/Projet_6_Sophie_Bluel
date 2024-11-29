@@ -70,7 +70,7 @@ export const connexionApi = async (identifiant) => {
  * @throws {Error} Si la suppression du travail échoue.
  */
 export const supprimerTravauxApi = async (id) => {
-    const token = localStorage.getItem("token")
+    const token = sessionStorage.getItem("token")
     try {
         const supprimer = await fetch(baseURL + `/works/${id}`, {
             method: "DELETE",
@@ -102,7 +102,7 @@ export const ajouterProjetApi = async (e) => {
     }
     const formData = new FormData(formulaireAjoutTravaux)
     try {
-        const token = localStorage.getItem("token")
+        const token = sessionStorage.getItem("token")
 
         const response = await fetch(baseURL + "/works", {
             method: "POST",
