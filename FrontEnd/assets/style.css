@@ -237,7 +237,8 @@ nav a.active {
 	opacity: 1 ;
 	cursor: pointer;
 }
-.filtres button:hover{
+
+.boutonsFiltre.active{
 	background-color: #1D6154;
 	color: white;
 }
