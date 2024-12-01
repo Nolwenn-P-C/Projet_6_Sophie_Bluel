@@ -66,7 +66,7 @@ const categoriesBoutons = async () => {
         return
     }
 
-    filtres.insertAdjacentHTML("beforeend", '<button id="0" class="boutonsFiltre">Tous</button>')
+    filtres.insertAdjacentHTML("beforeend", '<button id="0" class="boutonsFiltre active">Tous</button>')
 
     const categories = await categoriesApi()
     categories.forEach((categorie) => {
@@ -92,6 +92,11 @@ const filtreCategorie = async () => {
 
     boutons.forEach((bouton) => {
         bouton.addEventListener("click", () => {
+            
+            boutons.forEach(btn => btn.classList.remove('active'))
+
+            bouton.classList.add('active')
+
             let btnID = parseInt(bouton.id)
             let filtreWorks
             if (btnID === 0) {
