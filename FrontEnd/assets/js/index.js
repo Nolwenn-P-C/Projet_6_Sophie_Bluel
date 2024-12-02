@@ -12,7 +12,7 @@ const lienModale = document.querySelector(".lien-modale")
 //************************************************* Récupération des API **************************************************/
 //*************************************************************************************************************************/
 
-import { getWorks, categoriesApi } from './API.js'
+import { travauxApi, categoriesApi } from './API.js'
 
 
 //*************************************************************************************************************************/
@@ -26,7 +26,7 @@ import { getWorks, categoriesApi } from './API.js'
  */
 export const mesProjets = async () => {
     try {
-        let works = await getWorks()
+        let works = await travauxApi()
         let afficher = ''
 
         for (let figure of works) {
@@ -88,7 +88,7 @@ const categoriesBoutons = async () => {
  * @returns {Promise<void>} Ne retourne aucune valeur.
  */
 const filtreCategorie = async () => {
-    const works = await getWorks()
+    const works = await travauxApi()
     const boutons = document.querySelectorAll(".filtres button")
     const gallery = document.querySelector('.gallery')
 

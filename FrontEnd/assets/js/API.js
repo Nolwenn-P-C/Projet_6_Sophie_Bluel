@@ -1,5 +1,25 @@
 const baseURL = 'http://localhost:5678/api'
 
+
+/**
+ * Récupère les travaux depuis l'API.
+ * @async
+ * @returns {Promise<Array>} Une promesse contenant la liste des travaux.
+ * @throws {Error} Si la récupération des travaux échoue.
+ */
+export const travauxApi = async () => {
+    try {
+        const reponse = await fetch(baseURL + "/works")
+
+        if (!reponse.ok) throw new Error("Erreur lors de la récupération des projets")
+        const works = await reponse.json()
+        return works
+    } catch (err) {
+        console.error("Erreur lors de la récupération des projets :", err)
+        throw err
+    }
+}
+
 /**
  * Récupère les catégories depuis l'API.
  * @async
@@ -15,25 +35,6 @@ export const categoriesApi = async () => {
         return categories
     } catch (err) {
         console.error("Erreur lors de la récupération des catégories :", err)
-        throw err
-    }
-}
-
-/**
- * Récupère les travaux depuis l'API.
- * @async
- * @returns {Promise<Array>} Une promesse contenant la liste des travaux.
- * @throws {Error} Si la récupération des travaux échoue.
- */
-export const getWorks = async () => {
-    try {
-        const reponse = await fetch(baseURL + "/works")
-
-        if (!reponse.ok) throw new Error("Erreur lors de la récupération des projets")
-        const works = await reponse.json()
-        return works
-    } catch (err) {
-        console.error("Erreur lors de la récupération des projets :", err)
         throw err
     }
 }

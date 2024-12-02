@@ -29,14 +29,8 @@ const connexion = () => {
         try {
             const identification = await connexionApi(identifiant)
 
-            if (!identification.ok) {
-                let erreur = document.querySelector(".message-erreur")
-
-                if (!erreur) {
-                    logInFormulaire.insertAdjacentHTML('beforeend', '<p class="message-erreur">Erreur dans l’identifiant ou le mot de passe</p>')
-                }
-            } else {
-                const connexion = await identification.json()
+            if (identification.ok) {
+               const connexion = await identification.json()
 
                 sessionStorage.setItem("userId", connexion.userId)
                 sessionStorage.setItem("token", connexion.token)
@@ -47,20 +41,17 @@ const connexion = () => {
             console.error("Une erreur s'est produite lors de la connexion :", err)
             let erreur = document.querySelector(".message-erreur")
             if (!erreur) {
-                erreur = document.createElement("p")
-                erreur.textContent = "Une erreur s'est produite lors de la connexion. Veuillez réessayer."
-                erreur.classList.add("message-erreur")
-                logInFormulaire.appendChild(erreur)
+                logInFormulaire.insertAdjacentHTML('beforeend', '<p class="message-erreur">Erreur dans l’identifiant ou le mot de passe</p>')
             }
         }
     })
 }
 
 /**
- * Initialise la gestion de la connexion lors du chargement du DOM.
+ * Initialise la gestion de la connexion lors du chargement complet de la page.
  * Vérifie la présence du formulaire de connexion dans la page.
  */
-document.addEventListener("DOMContentLoaded", () => {
+window.addEventListener("load", () => {
     const formulaire = document.querySelector(".logInFormulaire")
 
     if (!formulaire) {

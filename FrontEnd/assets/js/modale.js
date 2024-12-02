@@ -15,14 +15,12 @@ const titreProjetModale = document.getElementById('modale-titre-ajout')
 const categorieProjetModale = document.getElementById('modale-2-categorie')
 const validationModale2 = document.getElementById('modale-validation-ajout-photo')
 
-
 //*************************************************************************************************************************/
 //************************************************* Récupération des API **************************************************/
 //*************************************************************************************************************************/
 
-import { categoriesApi, getWorks, supprimerTravauxApi, ajouterProjetApi } from './API.js'
+import { categoriesApi, travauxApi, supprimerTravauxApi, ajouterProjetApi } from './API.js'
 import { mesProjets } from './index.js'
-
 
 //*************************************************************************************************************************/
 //********************************************** Ouverture Fermeture Modale ***********************************************/
@@ -43,8 +41,11 @@ const ouvertureModale = (e) => {
 
     modale.addEventListener('click', fermetureModale)
     modale.querySelectorAll('.fermer-modale').forEach(btn => btn.addEventListener('click', fermetureModale))
-    modale.querySelectorAll('.js-modale-stop').forEach(btn => btn.addEventListener('click', stopPropagation))
+    modale.querySelector('.js-modale-stop')?.addEventListener('click', stopPropagation)
 }
+
+// Ajout des événements pour ouvrir ou fermer la modale
+document.querySelector('.js-modale').addEventListener('click', ouvertureModale)
 
 /**
  * Ferme la modale.
@@ -58,7 +59,7 @@ const fermetureModale = (e) => {
     modale.removeAttribute("aria-modal")
     modale.removeEventListener('click', fermetureModale)
     modale.querySelectorAll('.fermer-modale').forEach(btn => btn.removeEventListener('click', fermetureModale))
-    modale.querySelectorAll('.js-modale-stop').forEach(btn => btn.removeEventListener('click', stopPropagation))
+    modale.querySelector('.js-modale-stop').removeEventListener('click', stopPropagation)
     modale = null
 }
 
@@ -70,18 +71,12 @@ const stopPropagation = (e) => {
     e.stopPropagation()
 }
 
-// Ajout des événements pour ouvrir ou fermer la modale
-document.querySelectorAll('.js-modale').forEach(a => {
-    a.addEventListener('click', ouvertureModale)
-})
-
 // Fermeture de la modale avec le clavier
 window.addEventListener('keydown', (e) => {
     if (e.key === "Escape" || e.key === "Esc") {
         fermetureModale(e)
     }
 })
-
 
 //***********************************************************************************************************************/
 //********************************************** Supprimer des projets **************************************************/
@@ -95,7 +90,7 @@ window.addEventListener('keydown', (e) => {
 const afficherTravauxDansModale = async () => {
     try {
         modaleAjouterTravaux.style.display = "none"
-        let works = await getWorks()
+        let works = await travauxApi()
         let afficher = ''
 
         for (let figure of works) {
@@ -142,7 +137,6 @@ const supprimerWorks = async (id) => {
     }
 }
 
-
 //***********************************************************************************************************************/
 //********************************************** Changement de modale ***************************************************/
 //***********************************************************************************************************************/
@@ -174,7 +168,6 @@ const modalePrécédente = () => {
 }
 modalePrécédente()
 
-
 //***********************************************************************************************************************/
 //********************************************** Ajout projet Modale 2 **************************************************/
 //***********************************************************************************************************************/
@@ -187,7 +180,7 @@ const gererApercuImage = () => {
         const file = event.target.files[0]
         if (file) {
             const lecturePhoto = new FileReader()
-            // Définit la fonction à exécuter lorsque le fichier est lu avec succès
+
             lecturePhoto.onload = (e) => {
                 voirImage.src = e.target.result
                 voirImage.style.display = "block"
@@ -234,9 +227,9 @@ const gererCategories = async () => {
  * @returns {boolean}
  */
 const champsComplets = () => {
-    const nouvelleImageProjetModale = voirImage.src !== "" && voirImage.src !== "#"
-    const NouveauTitreProjetModale = titreProjetModale.value !== ""
-    const nouvelleCategorieProjetModale = categorieProjetModale.value !== ""
+    const nouvelleImageProjetModale = fichierImage.files && fichierImage.files.length > 0
+    const NouveauTitreProjetModale = titreProjetModale.value.trim() !== ""
+    const nouvelleCategorieProjetModale = categorieProjetModale.value.trim() !== ""
 
     return nouvelleImageProjetModale && NouveauTitreProjetModale && nouvelleCategorieProjetModale
 }
@@ -256,15 +249,14 @@ gererApercuImage()
 gererCategories()
 activationBoutonValidationModale2()
 
-
 /**
- * Une fois le projet ajouté, la module se réinitialise.
+ * Une fois le projet ajouté, la modale se réinitialise.
  */
 document.getElementById("formulaire-ajout-travaux").addEventListener("submit", async (e) => {
     e.preventDefault()
 
     if (!champsComplets()) {
-        console.error("Tous les champs ne sont pas remplis.")
+        alert("Veuillez remplir tous les champs requis !")
         return
     }
     try {
