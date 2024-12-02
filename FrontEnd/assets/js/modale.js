@@ -227,7 +227,7 @@ const gererCategories = async () => {
  * @returns {boolean}
  */
 const champsComplets = () => {
-    const nouvelleImageProjetModale = fichierImage.files && fichierImage.files.length > 0
+    const nouvelleImageProjetModale = voirImage.src !== "" && voirImage.src !== "#"
     const NouveauTitreProjetModale = titreProjetModale.value.trim() !== ""
     const nouvelleCategorieProjetModale = categorieProjetModale.value.trim() !== ""
 
@@ -256,7 +256,7 @@ document.getElementById("formulaire-ajout-travaux").addEventListener("submit", a
     e.preventDefault()
 
     if (!champsComplets()) {
-        alert("Veuillez remplir tous les champs requis !")
+        console.error("Tous les champs ne sont pas remplis.")
         return
     }
     try {
