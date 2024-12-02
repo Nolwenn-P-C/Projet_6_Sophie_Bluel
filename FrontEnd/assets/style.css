@@ -330,8 +330,8 @@ body.banner-active .header {
 	overflow:auto;
 	width:630px;
 	height: 688px;
-	max-width: calc(100vw- 20px);
-	max-height: calc(100vh- 20px);
+	max-width: calc(100vw - 20px);
+    max-height: calc(100vh - 20px);
 	padding:20px;
 	background-color: #FFF;
 	border-radius: 10px;
@@ -352,7 +352,7 @@ body.banner-active .header {
 	cursor: pointer;
 }
 
-#modale-titre{
+.modale-titre{
 	font-size: 26px;
 	text-align: center;
 	font-weight: 400;
@@ -369,7 +369,7 @@ body.banner-active .header {
     margin : 2em auto ;
 	width:237px;
 	height: 35px;
-	size:14px;
+	font-size: 14px;
 	font-family: 'Syne';
 	font-weight: 700;
 	color: white;
@@ -482,7 +482,7 @@ input[type="file"] {
 }
 
 .type-taille-fichier {
-	size: 10px !important;
+	font-size: 10px !important;
 }
 
 #voir-image {
