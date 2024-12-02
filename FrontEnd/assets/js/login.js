@@ -9,7 +9,8 @@ import { connexionApi } from './API.js'
 //*************************************************************************************************************************/
 
 /**
- * Fonction pour gérer la connexion.
+ * Gère la soumission du formulaire de connexion.
+ * Valide les identifiants, effectue une requête à l'API et gère les réponses.
  */
 const connexion = () => {
     const logInFormulaire = document.querySelector(".logInFormulaire")
@@ -55,6 +56,10 @@ const connexion = () => {
     })
 }
 
+/**
+ * Initialise la gestion de la connexion lors du chargement du DOM.
+ * Vérifie la présence du formulaire de connexion dans la page.
+ */
 document.addEventListener("DOMContentLoaded", () => {
     const formulaire = document.querySelector(".logInFormulaire")
 

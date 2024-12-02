@@ -7,11 +7,13 @@ const logInOutBtn = document.querySelector(".logInOut")
 const token = sessionStorage.getItem("token")
 const lienModale = document.querySelector(".lien-modale")
 
+
 //*************************************************************************************************************************/
 //************************************************* Récupération des API **************************************************/
 //*************************************************************************************************************************/
 
 import { getWorks, categoriesApi } from './API.js'
+
 
 //*************************************************************************************************************************/
 //************************************************** Affichage des projets ************************************************/
@@ -20,7 +22,7 @@ import { getWorks, categoriesApi } from './API.js'
 /**
  * Affiche les projets en récupérant les travaux depuis l'API et en les injectant dans la galerie.
  * @async
- * @returns {Promise<void>}
+ * @returns {Promise<void>} Ne retourne aucune valeur.
  */
 export const mesProjets = async () => {
     try {
@@ -50,7 +52,6 @@ export const mesProjets = async () => {
 mesProjets()
 
 
-
 //***********************************************************************************************************************/
 //******************************************* Création des boutons filtres **********************************************/
 //***********************************************************************************************************************/
@@ -58,7 +59,7 @@ mesProjets()
 /**
  * Crée les boutons de filtres en fonction des catégories récupérées depuis l'API.
  * @async
- * @returns {Promise<void>}
+ * @returns {Promise<void>} Ne retourne aucune valeur.
  */
 const categoriesBoutons = async () => {
     
@@ -76,6 +77,7 @@ const categoriesBoutons = async () => {
     filtreCategorie()
 }
 
+
 //***********************************************************************************************************************/
 //************************************* Affichage et fonctionnement des filtres *****************************************/
 //***********************************************************************************************************************/
@@ -83,7 +85,7 @@ const categoriesBoutons = async () => {
 /**
  * Filtre les projets en fonction des boutons de filtres cliqués.
  * @async
- * @returns {Promise<void>}
+ * @returns {Promise<void>} Ne retourne aucune valeur.
  */
 const filtreCategorie = async () => {
     const works = await getWorks()
@@ -104,7 +106,7 @@ const filtreCategorie = async () => {
             } else {
                 filtreWorks = works.filter(work => work.categoryId === btnID)
             }
-
+            
             for (let i = gallery.children.length - 1; i >= 0; i--) {
                 gallery.removeChild(gallery.children[i])
             }
@@ -129,9 +131,10 @@ const filtreCategorie = async () => {
 //*************************************************************************************************************************/
 
 /**
- * Fonction principale qui gère l'affichage en fonction de la présence du token.
+ * Fonction principale exécutée au chargement de la page.
+ * Configure l'affichage en fonction de l'état de connexion de l'utilisateur.
  * @async
- * @returns {Promise<void>}
+ * @returns {Promise<void>} Ne retourne aucune valeur.
  */
 const main = async () => {
     if (token) {

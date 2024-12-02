@@ -15,12 +15,14 @@ const titreProjetModale = document.getElementById('modale-titre-ajout')
 const categorieProjetModale = document.getElementById('modale-2-categorie')
 const validationModale2 = document.getElementById('modale-validation-ajout-photo')
 
+
 //*************************************************************************************************************************/
 //************************************************* Récupération des API **************************************************/
 //*************************************************************************************************************************/
 
 import { categoriesApi, getWorks, supprimerTravauxApi, ajouterProjetApi } from './API.js'
 import { mesProjets } from './index.js'
+
 
 //*************************************************************************************************************************/
 //********************************************** Ouverture Fermeture Modale ***********************************************/
@@ -68,15 +70,18 @@ const stopPropagation = (e) => {
     e.stopPropagation()
 }
 
+// Ajout des événements pour ouvrir ou fermer la modale
 document.querySelectorAll('.js-modale').forEach(a => {
     a.addEventListener('click', ouvertureModale)
 })
 
+// Fermeture de la modale avec le clavier
 window.addEventListener('keydown', (e) => {
     if (e.key === "Escape" || e.key === "Esc") {
         fermetureModale(e)
     }
 })
+
 
 //***********************************************************************************************************************/
 //********************************************** Supprimer des projets **************************************************/
@@ -121,10 +126,8 @@ const afficherTravauxDansModale = async () => {
 }
 afficherTravauxDansModale()
 
-
-
 /**
- * Supprime un travail.
+ * Supprime un projet via son identifiant.
  * @async
  * @param {number} id - L'identifiant du travail à supprimer.
  * @returns {Promise<void>}
@@ -138,6 +141,7 @@ const supprimerWorks = async (id) => {
         console.error("Erreur lors de la suppression :", error)
     }
 }
+
 
 //***********************************************************************************************************************/
 //********************************************** Changement de modale ***************************************************/
@@ -170,6 +174,7 @@ const modalePrécédente = () => {
 }
 modalePrécédente()
 
+
 //***********************************************************************************************************************/
 //********************************************** Ajout projet Modale 2 **************************************************/
 //***********************************************************************************************************************/
@@ -200,7 +205,7 @@ const gererApercuImage = () => {
 }
 
 /**
- * Gère les catégories pour le formulaire d'ajout de projet.
+ * Charge les catégories dans le formulaire.
  * @async
  * @returns {Promise<void>}
  */
@@ -243,8 +248,8 @@ const activationBoutonValidationModale2 = () => {
     validationModale2.style.backgroundColor = champsComplets() ? "#1D6154" : "#A7A7A7"
 }
 
+// Gestion des événements liés au formulaire
 titreProjetModale.addEventListener("input", activationBoutonValidationModale2)
-
 categorieProjetModale.addEventListener("change", activationBoutonValidationModale2)
 
 gererApercuImage()
@@ -253,7 +258,7 @@ activationBoutonValidationModale2()
 
 
 /**
- * Une fois le projet ajouter, la module se réinitialise.
+ * Une fois le projet ajouté, la module se réinitialise.
  */
 document.getElementById("formulaire-ajout-travaux").addEventListener("submit", async (e) => {
     e.preventDefault()
