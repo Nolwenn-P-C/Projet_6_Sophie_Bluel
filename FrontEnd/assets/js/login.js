@@ -9,7 +9,8 @@ import { connexionApi } from './API.js'
 //*************************************************************************************************************************/
 
 /**
- * Fonction pour gérer la connexion.
+ * Gère la soumission du formulaire de connexion.
+ * Valide les identifiants, effectue une requête à l'API et gère les réponses.
  */
 const connexion = () => {
     const logInFormulaire = document.querySelector(".logInFormulaire")
@@ -28,14 +29,8 @@ const connexion = () => {
         try {
             const identification = await connexionApi(identifiant)
 
-            if (!identification.ok) {
-                let erreur = document.querySelector(".message-erreur")
-
-                if (!erreur) {
-                    logInFormulaire.insertAdjacentHTML('beforeend', '<p class="message-erreur">Erreur dans l’identifiant ou le mot de passe</p>')
-                }
-            } else {
-                const connexion = await identification.json()
+            if (identification.ok) {
+               const connexion = await identification.json()
 
                 sessionStorage.setItem("userId", connexion.userId)
                 sessionStorage.setItem("token", connexion.token)
@@ -46,16 +41,17 @@ const connexion = () => {
             console.error("Une erreur s'est produite lors de la connexion :", err)
             let erreur = document.querySelector(".message-erreur")
             if (!erreur) {
-                erreur = document.createElement("p")
-                erreur.textContent = "Une erreur s'est produite lors de la connexion. Veuillez réessayer."
-                erreur.classList.add("message-erreur")
-                logInFormulaire.appendChild(erreur)
+                logInFormulaire.insertAdjacentHTML('beforeend', '<p class="message-erreur">Erreur dans l’identifiant ou le mot de passe</p>')
             }
         }
     })
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+/**
+ * Initialise la gestion de la connexion lors du chargement complet de la page.
+ * Vérifie la présence du formulaire de connexion dans la page.
+ */
+window.addEventListener("load", () => {
     const formulaire = document.querySelector(".logInFormulaire")
 
     if (!formulaire) {

@@ -299,10 +299,6 @@ body.banner-active .header {
     display: block;
 }
 
-.modale {
-    display: none;
-}
-
 .lien-modale {
 	font-family: 'Work Sans';
 	font-style: normal;
@@ -471,11 +467,18 @@ body.banner-active .header {
 }
 
 .ajouter-une-photo{
+	display: inline-block;
 	color: #306685;
 	background-color: #cbd6dc;
 	padding: 10px 33px;
 	border-radius: 50px;
 	cursor: pointer;
+}
+
+input[type="file"] {
+    opacity: 0; 
+    position: absolute;
+    z-index: -1; 
 }
 
 .type-taille-fichier {

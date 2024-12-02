@@ -1,9 +1,29 @@
 const baseURL = 'http://localhost:5678/api'
 
+
+/**
+ * Récupère les travaux depuis l'API.
+ * @async
+ * @returns {Promise<Array>} Une promesse contenant la liste des travaux.
+ * @throws {Error} Si la récupération des travaux échoue.
+ */
+export const travauxApi = async () => {
+    try {
+        const reponse = await fetch(baseURL + "/works")
+
+        if (!reponse.ok) throw new Error("Erreur lors de la récupération des projets")
+        const works = await reponse.json()
+        return works
+    } catch (err) {
+        console.error("Erreur lors de la récupération des projets :", err)
+        throw err
+    }
+}
+
 /**
  * Récupère les catégories depuis l'API.
  * @async
- * @returns {Promise<Array>} Les catégories récupérées.
+ * @returns {Promise<Array>} Une promesse contenant la liste des catégories.
  * @throws {Error} Si la récupération des catégories échoue.
  */
 export const categoriesApi = async () => {
@@ -20,29 +40,10 @@ export const categoriesApi = async () => {
 }
 
 /**
- * Récupère les travaux depuis l'API.
- * @async
- * @returns {Promise<Array>} Les travaux récupérés.
- * @throws {Error} Si la récupération des travaux échoue.
- */
-export const getWorks = async () => {
-    try {
-        const reponse = await fetch(baseURL + "/works")
-
-        if (!reponse.ok) throw new Error("Erreur lors de la récupération des projets")
-        const works = await reponse.json()
-        return works
-    } catch (err) {
-        console.error("Erreur lors de la récupération des projets :", err)
-        throw err
-    }
-}
-
-/**
  * Effectue la connexion de l'utilisateur via l'API.
  * @async
- * @param {Object} identifiant - Les identifiants de connexion.
- * @returns {Promise<Response>} La réponse de l'API.
+ * @param {Object} identifiant - Les identifiants de connexion, comprenant l'email et le mot de passe.
+ * @returns {Promise<Response>} Une promesse contenant la réponse de l'API.
  * @throws {Error} Si la connexion échoue.
  */
 export const connexionApi = async (identifiant) => {
@@ -65,8 +66,8 @@ export const connexionApi = async (identifiant) => {
 /**
  * Supprime un travail via l'API.
  * @async
- * @param {number} id - L'identifiant du travail à supprimer.
- * @returns {Promise<Response>} La réponse de l'API.
+ * @param {number} id - L'identifiant unique du travail à supprimer.
+ * @returns {Promise<Response>} Une promesse contenant la réponse de l'API.
  * @throws {Error} Si la suppression du travail échoue.
  */
 export const supprimerTravauxApi = async (id) => {
@@ -89,8 +90,8 @@ export const supprimerTravauxApi = async (id) => {
 /**
  * Ajoute un projet via l'API.
  * @async
- * @param {Event} e - L'événement de soumission du formulaire.
- * @returns {Promise<void>}
+ * @param {Event} e - L'événement de soumission du formulaire d'ajout de projet.
+ * @returns {Promise<void>}Une promesse résolue lorsque le projet est ajouté avec succès.
  * @throws {Error} Si l'ajout du projet échoue.
  */
 export const ajouterProjetApi = async (e) => {
