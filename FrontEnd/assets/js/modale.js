@@ -227,7 +227,7 @@ const gererCategories = async () => {
  * @returns {boolean}
  */
 const champsComplets = () => {
-    const nouvelleImageProjetModale = ajouterPhotoTexte.style.display === "none" ? true : false;
+    const nouvelleImageProjetModale = ajouterPhotoTexte.style.display === "none" ? true : false
     const NouveauTitreProjetModale = titreProjetModale.value.trim() !== ""
     const nouvelleCategorieProjetModale = categorieProjetModale.value.trim() !== ""
 

@@ -375,6 +375,7 @@ body.banner-active .header {
 	color: white;
 	background-color:#1D6154 ;
 	border-radius: 60px;
+	cursor: pointer;
 }
 
 .modale-gallerie {
